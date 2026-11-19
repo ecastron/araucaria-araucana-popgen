@@ -1,0 +1,139 @@
+table merged | 228 libraries, 79 trees, 3153 ASVs | shallowest library 1075 reads
+  level               data detection prevalence n_core mean_core_abundance
+    ASV relative abundance     0e+00       0.10     31          0.40370551
+    ASV relative abundance     1e-04       0.10     31          0.40370551
+    ASV relative abundance     1e-03       0.10     28          0.39120177
+    ASV relative abundance     1e-02       0.10     18          0.33809419
+    ASV relative abundance     0e+00       0.25      6          0.17994652
+    ASV relative abundance     1e-04       0.25      7          0.19097950
+    ASV relative abundance     1e-03       0.25      6          0.17994652
+    ASV relative abundance     1e-02       0.25      2          0.10352267
+    ASV relative abundance     0e+00       0.40      2          0.10352267
+    ASV relative abundance     1e-04       0.40      2          0.10352267
+    ASV relative abundance     1e-03       0.40      1          0.02927599
+    ASV relative abundance     1e-02       0.40      0          0.00000000
+    ASV relative abundance     0e+00       0.50      0          0.00000000
+    ASV relative abundance     1e-04       0.50      0          0.00000000
+    ASV relative abundance     1e-03       0.50      0          0.00000000
+    ASV relative abundance     1e-02       0.50      0          0.00000000
+    ASV relative abundance     0e+00       0.60      0          0.00000000
+    ASV relative abundance     1e-04       0.60      0          0.00000000
+    ASV relative abundance     1e-03       0.60      0          0.00000000
+    ASV relative abundance     1e-02       0.60      0          0.00000000
+    ASV relative abundance     0e+00       0.70      0          0.00000000
+    ASV relative abundance     1e-04       0.70      0          0.00000000
+    ASV relative abundance     1e-03       0.70      0          0.00000000
+    ASV relative abundance     1e-02       0.70      0          0.00000000
+    ASV relative abundance     0e+00       0.80      0          0.00000000
+    ASV relative abundance     1e-04       0.80      0          0.00000000
+    ASV relative abundance     1e-03       0.80      0          0.00000000
+    ASV relative abundance     1e-02       0.80      0          0.00000000
+    ASV relative abundance     0e+00       0.90      0          0.00000000
+    ASV relative abundance     1e-04       0.90      0          0.00000000
+    ASV relative abundance     1e-03       0.90      0          0.00000000
+    ASV relative abundance     1e-02       0.90      0          0.00000000
+    ASV   rarefied to 1075     0e+00       0.10     30          0.40241126
+    ASV   rarefied to 1075     1e-04       0.10     30          0.40241126
+    ASV   rarefied to 1075     1e-03       0.10     27          0.39022032
+    ASV   rarefied to 1075     1e-02       0.10     18          0.33886577
+    ASV   rarefied to 1075     0e+00       0.25      6          0.18019584
+    ASV   rarefied to 1075     1e-04       0.25      6          0.18019584
+    ASV   rarefied to 1075     1e-03       0.25      6          0.18019584
+    ASV   rarefied to 1075     1e-02       0.25      2          0.10299062
+    ASV   rarefied to 1075     0e+00       0.40      1          0.02893513
+    ASV   rarefied to 1075     1e-04       0.40      1          0.02893513
+    ASV   rarefied to 1075     1e-03       0.40      1          0.02893513
+    ASV   rarefied to 1075     1e-02       0.40      0          0.00000000
+    ASV   rarefied to 1075     0e+00       0.50      0          0.00000000
+    ASV   rarefied to 1075     1e-04       0.50      0          0.00000000
+    ASV   rarefied to 1075     1e-03       0.50      0          0.00000000
+    ASV   rarefied to 1075     1e-02       0.50      0          0.00000000
+    ASV   rarefied to 1075     0e+00       0.60      0          0.00000000
+    ASV   rarefied to 1075     1e-04       0.60      0          0.00000000
+    ASV   rarefied to 1075     1e-03       0.60      0          0.00000000
+    ASV   rarefied to 1075     1e-02       0.60      0          0.00000000
+    ASV   rarefied to 1075     0e+00       0.70      0          0.00000000
+    ASV   rarefied to 1075     1e-04       0.70      0          0.00000000
+    ASV   rarefied to 1075     1e-03       0.70      0          0.00000000
+    ASV   rarefied to 1075     1e-02       0.70      0          0.00000000
+    ASV   rarefied to 1075     0e+00       0.80      0          0.00000000
+    ASV   rarefied to 1075     1e-04       0.80      0          0.00000000
+    ASV   rarefied to 1075     1e-03       0.80      0          0.00000000
+    ASV   rarefied to 1075     1e-02       0.80      0          0.00000000
+    ASV   rarefied to 1075     0e+00       0.90      0          0.00000000
+    ASV   rarefied to 1075     1e-04       0.90      0          0.00000000
+    ASV   rarefied to 1075     1e-03       0.90      0          0.00000000
+    ASV   rarefied to 1075     1e-02       0.90      0          0.00000000
+ Family relative abundance     0e+00       0.10     57          0.75477782
+ Family relative abundance     1e-04       0.10     56          0.74667177
+ Family relative abundance     1e-03       0.10     46          0.71488775
+ Family relative abundance     1e-02       0.10     20          0.56777393
+ Family relative abundance     0e+00       0.25     14          0.48769847
+ Family relative abundance     1e-04       0.25     14          0.48769847
+ Family relative abundance     1e-03       0.25     12          0.46451310
+ Family relative abundance     1e-02       0.25      5          0.31966166
+ Family relative abundance     0e+00       0.40      5          0.31966166
+ Family relative abundance     1e-04       0.40      5          0.31966166
+ Family relative abundance     1e-03       0.40      4          0.24506916
+ Family relative abundance     1e-02       0.40      3          0.21956919
+ Family relative abundance     0e+00       0.50      3          0.21956919
+ Family relative abundance     1e-04       0.50      3          0.21956919
+ Family relative abundance     1e-03       0.50      3          0.21956919
+ Family relative abundance     1e-02       0.50      0          0.00000000
+ Family relative abundance     0e+00       0.60      2          0.14144724
+ Family relative abundance     1e-04       0.60      2          0.14144724
+ Family relative abundance     1e-03       0.60      1          0.05965849
+ Family relative abundance     1e-02       0.60      0          0.00000000
+ Family relative abundance     0e+00       0.70      0          0.00000000
+ Family relative abundance     1e-04       0.70      0          0.00000000
+ Family relative abundance     1e-03       0.70      0          0.00000000
+ Family relative abundance     1e-02       0.70      0          0.00000000
+ Family relative abundance     0e+00       0.80      0          0.00000000
+ Family relative abundance     1e-04       0.80      0          0.00000000
+ Family relative abundance     1e-03       0.80      0          0.00000000
+ Family relative abundance     1e-02       0.80      0          0.00000000
+ Family relative abundance     0e+00       0.90      0          0.00000000
+ Family relative abundance     1e-04       0.90      0          0.00000000
+ Family relative abundance     1e-03       0.90      0          0.00000000
+ Family relative abundance     1e-02       0.90      0          0.00000000
+ Family   rarefied to 1075     0e+00       0.10     50          0.72535292
+ Family   rarefied to 1075     1e-04       0.10     50          0.72535292
+ Family   rarefied to 1075     1e-03       0.10     45          0.70766626
+ Family   rarefied to 1075     1e-02       0.10     23          0.58597307
+ Family   rarefied to 1075     0e+00       0.25     12          0.46477356
+ Family   rarefied to 1075     1e-04       0.25     13          0.47091391
+ Family   rarefied to 1075     1e-03       0.25     12          0.46477356
+ Family   rarefied to 1075     1e-02       0.25      5          0.31941656
+ Family   rarefied to 1075     0e+00       0.40      3          0.21959608
+ Family   rarefied to 1075     1e-04       0.40      3          0.21959608
+ Family   rarefied to 1075     1e-03       0.40      3          0.21959608
+ Family   rarefied to 1075     1e-02       0.40      3          0.21959608
+ Family   rarefied to 1075     0e+00       0.50      3          0.21959608
+ Family   rarefied to 1075     1e-04       0.50      3          0.21959608
+ Family   rarefied to 1075     1e-03       0.50      3          0.21959608
+ Family   rarefied to 1075     1e-02       0.50      0          0.00000000
+ Family   rarefied to 1075     0e+00       0.60      1          0.05946552
+ Family   rarefied to 1075     1e-04       0.60      1          0.05946552
+ Family   rarefied to 1075     1e-03       0.60      0          0.00000000
+ Family   rarefied to 1075     1e-02       0.60      0          0.00000000
+ Family   rarefied to 1075     0e+00       0.70      0          0.00000000
+ Family   rarefied to 1075     1e-04       0.70      0          0.00000000
+ Family   rarefied to 1075     1e-03       0.70      0          0.00000000
+ Family   rarefied to 1075     1e-02       0.70      0          0.00000000
+ Family   rarefied to 1075     0e+00       0.80      0          0.00000000
+ Family   rarefied to 1075     1e-04       0.80      0          0.00000000
+ Family   rarefied to 1075     1e-03       0.80      0          0.00000000
+ Family   rarefied to 1075     1e-02       0.80      0          0.00000000
+ Family   rarefied to 1075     0e+00       0.90      0          0.00000000
+ Family   rarefied to 1075     1e-04       0.90      0          0.00000000
+ Family   rarefied to 1075     1e-03       0.90      0          0.00000000
+ Family   rarefied to 1075     1e-02       0.90      0          0.00000000
+
+ASVs in >= 50% of libraries: 0
+NULL
+
+Families in >= 40% of libraries (rarefied, >= 0.1% of reads):
+   f__Cladosporiaceae f__Teratosphaeriaceae     f__Coniophoraceae 
+                0.588                 0.579                 0.548 
+
+sessionInfo: microbiome 1.26.0 phyloseq 1.48.0 

@@ -1,0 +1,8 @@
+{
+  "title": "Code and derived data for: Population history and adaptive divergence in Araucaria araucana",
+  "upload_type": "software",
+  "description": "Analysis code (HPC pipeline, coalescent simulations, abcrf model choice and parameter estimation, figure builders) and derived data for the article 'Population history and adaptive divergence in Araucaria araucana'. Raw reads are in NCBI SRA (BioProjects PRJNA634877 and PRJNA517193). Code under the MIT license; derived data under CC BY 4.0.",
+  "creators": [{"name": "Castro-Nallar, Eduardo", "affiliation": "Universidad de Talca"}],
+  "license": "MIT",
+  "keywords": ["Araucaria araucana", "RAD-seq", "population genomics", "ABC random forest", "QST-FST", "fungal endophytes"]
+}

@@ -1,0 +1,7 @@
+# rendered figures are rebuilt by the scripts in figures/
+figures/journal/
+figures/supplementary/
+__pycache__/
+*.pyc
+.DS_Store
+.Rhistory

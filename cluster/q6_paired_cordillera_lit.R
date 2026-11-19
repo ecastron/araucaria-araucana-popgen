@@ -1,0 +1,233 @@
+#!/usr/bin/env Rscript
+# Cordillera split using needle AND branch as PAIRED observations of the same tree.
+# Tree identity is the permutation stratum, so the non-independence of a tree's two
+# compartments is respected rather than averaged away.
+#   - cordillera is a BETWEEN-tree factor  -> permute whole trees (freely across trees)
+#   - compartment is a WITHIN-tree factor  -> permute within tree
+suppressPackageStartupMessages({library(vegan); library(permute)})
+set.seed(2026); P <- "/home/ecastron/araucaria"
+sink(file.path(P,"results/Q6/varpart/q6_paired_cordillera.txt"), split=TRUE)
+
+st16 <- readRDS(file.path(P,"microbiome/16S/seqtab_nochim.rds"))
+tx16 <- as.data.frame(readRDS(file.path(P,"microbiome/16S/taxonomy.rds")),stringsAsFactors=FALSE)
+org <- rep(FALSE, ncol(st16))
+for (rk in colnames(tx16)) org <- org | grepl("Chloroplast|Mitochondri", tx16[[rk]], ignore.case=TRUE)
+org[is.na(org)] <- FALSE; names(org) <- colnames(st16)
+stI <- readRDS(file.path(P,"microbiome/ITS/seqtab_nochim.rds"))
+
+rel <- read.delim(file.path(P,"results/Q2/ngsrelate.tsv"),check.names=FALSE)
+radman <- read.csv(file.path(P,"metadata/manifest rad runs.csv"),stringsAsFactors=FALSE)
+bare<-function(v) sub("\\.[12]$","",v)
+tree_of<-setNames(radman$tree_id,radman$run_accession)
+cord_of<-setNames(radman$cordillera,radman$tree_id)
+ta<-tree_of[bare(as.character(rel$ida))]; tb<-tree_of[bare(as.character(rel$idb))]
+gd<-!is.na(ta)&!is.na(tb)&ta!=tb&rel$nSites>=2000&is.finite(rel$theta)
+trees<-sort(unique(c(ta[gd],tb[gd])))
+K<-matrix(NA_real_,length(trees),length(trees),dimnames=list(trees,trees))
+for (i in which(gd)){K[ta[i],tb[i]]<-rel$theta[i]; K[tb[i],ta[i]]<-rel$theta[i]}
+diag(K)<-max(rel$theta[gd],na.rm=TRUE)
+ch<-read.delim(file.path(P,"metadata/chelsa_per_tree.tsv"),check.names=FALSE)
+te<-read.delim(file.path(P,"metadata/terrain_per_tree.tsv"),check.names=FALSE)
+# LITERATURE + INDEPENDENCE set, selected 31 Aug 2026 and blind to the cordillera
+# contrast. Candidates were drawn from the A. araucana literature (summer heat and
+# growing-season water as the dominant growth constraints; winter cold; soil CEC,
+# pH, N, organic C as the standard soil-status indicators; clay for the
+# Andosol->Cambisol shift along this hydroclimatic gradient), then pruned greedily
+# to mutual |r| < 0.7 across the 12 stand means. Dropped by that pruning:
+# elevation (|r| = 0.91 with bio6), bio7 (0.80 with bio6), bio4 (0.80 with bio6),
+# bio12 (0.96 with bio18), bio10 (0.84 with bio5), bio15 (0.74 with bio18),
+# bulk density (0.80 with bio18). The published bio7 + bio18 + bio3 + elevation set
+# carried that hidden redundancy.
+env<-merge(ch[,c("tree_id","site_code","lon","lat","bio7","bio18","bio3","bio5","bio6")],
+           te[,c("tree_id","dem_elev_m")],by="tree_id",all.x=TRUE)
+# SoilGrids is per stand, so it joins on site_code. Soil was never in this model,
+# yet clay is the second-strongest Coastal/Andean discriminator of the 39 variables
+# tested (d = +1.87, exact permutation p = 0.0045) -- stronger than three of the
+# four terms that WERE included, one of which (elevation) does not discriminate at
+# all (p = 0.132).
+so<-read.delim(file.path(P,"metadata/soil_per_stand.tsv"),check.names=FALSE)
+env<-merge(env, so[,c("site_code","clay_0-5cm","cec_0-5cm","phh2o_0-5cm",
+                      "nitrogen_0-5cm","soc_0-5cm")], by="site_code", all.x=TRUE)
+names(env)[names(env)=="clay_0-5cm"]<-"clay"; names(env)[names(env)=="cec_0-5cm"]<-"cec"
+names(env)[names(env)=="phh2o_0-5cm"]<-"ph"; names(env)[names(env)=="nitrogen_0-5cm"]<-"nitro"
+names(env)[names(env)=="soc_0-5cm"]<-"soc"
+# Cordillera-BLIND soil representation. clay and cec were picked because they
+# separate the cordilleras best, which is the one criterion guaranteed to weaken
+# the cordillera term it is then used to condition on. These PCs come from a PCA
+# of all 14 soil variables with no reference to the range labels: PC1 44% of soil
+# variance (clay/CEC vs sand/pH texture axis), PC2 22.5% (bulk density, N, pH).
+pc<-read.delim(file.path(P,"metadata/soil_pcs.tsv"),check.names=FALSE)
+env<-merge(env, pc[,c("site_code","soilPC1","soilPC2")], by="site_code", all.x=TRUE)
+clr<-function(m){m<-as.matrix(m); if(any(m==0)) m[m==0]<-0.65*min(m[m>0]); t(apply(m,1,function(x) log(x)-mean(log(x))))}
+
+build <- function(raw, amp, drop_org=FALSE){
+  parts<-list()
+  for (comp in c("needle","branch")){
+    o<-readRDS(file.path(P,sprintf("results/Q5/q5_%s_%s_objects.rds",amp,comp)))
+    m<-o$manifest; m<-m[!is.na(m$tree_id),]
+    ids<-intersect(rownames(raw),m$run_accession); if(!length(ids)) next
+    m<-m[match(ids,m$run_accession),]
+    x<-raw[ids,,drop=FALSE]; rownames(x)<-m$tree_id
+    x<-x[rownames(x)%in%trees,,drop=FALSE]
+    parts[[comp]]<-x
+  }
+  sh<-Reduce(intersect,lapply(parts,rownames))          # trees measured in BOTH
+  cols<-Reduce(union,lapply(parts,colnames))
+  mk<-function(M){A<-matrix(0,length(sh),length(cols),dimnames=list(sh,cols)); A[sh,colnames(M)]<-M[sh,]; A}
+  X<-rbind(mk(parts$needle),mk(parts$branch))
+  if (drop_org) X<-X[,!org[colnames(X)],drop=FALSE]
+  meta<-data.frame(tree=rep(sh,2), comp=factor(rep(c("needle","branch"),each=length(sh))),
+                   stringsAsFactors=FALSE)
+  keep<-rowSums(X)>=250
+  X<-X[keep,,drop=FALSE]; meta<-meta[keep,]
+  # keep only trees still represented by BOTH compartments after the depth floor
+  ok<-names(which(table(meta$tree)==2))
+  sel<-meta$tree %in% ok; X<-X[sel,,drop=FALSE]; meta<-meta[sel,]
+  X<-X[,colSums(X>0)>=5 & colSums(X)/sum(X)>=1e-4,drop=FALSE]
+  meta$cord<-factor(ifelse(cord_of[meta$tree]=="Costa","Coastal","Andean"))
+  ev<-env[match(meta$tree,env$tree_id),]
+  list(X=X, meta=meta, ev=ev)
+}
+
+run <- function(raw, amp, drop_org=FALSE){
+  b<-build(raw,amp,drop_org); X<-b$X; meta<-b$meta; ev<-b$ev
+  ntree<-length(unique(meta$tree))
+  cat(sprintf("\n=========== %s : needle + branch as PAIRED observations ===========\n",amp))
+  cat(sprintf("  %d trees x 2 compartments = %d observations | %d ASVs\n", ntree, nrow(X), ncol(X)))
+  cat(sprintf("  Coastal %d trees, Andean %d trees\n",
+      length(unique(meta$tree[meta$cord=="Coastal"])), length(unique(meta$tree[meta$cord=="Andean"]))))
+  if (ntree < 12){cat("  too few trees\n"); return(invisible())}
+  D<-dist(clr(X))
+  # BETWEEN-tree factor: permute whole trees
+  hB <- how(blocks = factor(meta$tree), nperm = 9999)
+  hB <- how(plots = Plots(strata=factor(meta$tree), type="free"),
+            within = Within(type="none"), nperm = 9999)
+  cat("\n  --- CORDILLERA (between-tree; whole trees permuted) ---\n")
+  aC <- adonis2(D ~ cord, data=meta, permutations=hB)
+  cat(sprintf("   R2 = %.4f  F = %.3f  p = %.4f\n", aC$R2[1], aC$F[1], aC$`Pr(>F)`[1]))
+  bd<-betadisper(D, meta$cord); pb<-permutest(bd,permutations=9999)$tab
+  cat(sprintf("   betadisper F = %.3f p = %.4f -> %s\n", pb[1,4], pb[1,6],
+      if(pb[1,6]<0.05) "spread differs" else "spread homogeneous; a location effect"))
+  cat("\n  --- COMPARTMENT (within-tree; permuted inside each tree) ---\n")
+  hW <- how(plots = Plots(strata=factor(meta$tree), type="none"),
+            within = Within(type="free"), nperm = 9999)
+  aP <- adonis2(D ~ comp, data=meta, permutations=hW)
+  cat(sprintf("   R2 = %.4f  F = %.3f  p = %.4f\n", aP$R2[1], aP$F[1], aP$`Pr(>F)`[1]))
+  cat("\n  --- cordillera + compartment together ---\n")
+  aB <- adonis2(D ~ cord + comp, data=meta, permutations=hB, by="terms")
+  print(aB)
+  cat("\n  --- cordillera conditioned on climate (dbRDA, trees permuted) ---\n")
+  CLIM<-scale(ev[,c("bio7","bio18","bio3","dem_elev_m")]); colnames(CLIM)<-c("bio7","bio18","bio3","elev")
+  SOIL<-scale(ev[,c("clay","cec")]); colnames(SOIL)<-c("clay","cec")
+  SPC <-scale(ev[,c("soilPC1","soilPC2")]); colnames(SPC)<-c("soilPC1","soilPC2")
+  ENV2<-cbind(CLIM,SOIL)
+  # With 3 Coastal and 9 Andean stands, a variable that separates them completely is
+  # near-collinear with the cordillera factor, so absorbing the cordillera term would
+  # be partly STRUCTURAL rather than mechanistic. Report it so it cannot hide.
+  cat("\n  --- how far each env term duplicates the cordillera factor ---\n")
+  for (v in colnames(ENV2)) {
+    r2<-summary(lm(ENV2[,v] ~ meta$cord))$r.squared
+    cat(sprintf("   %-6s R2 vs cordillera = %.3f\n", v, r2))
+  }
+  cat("\n  --- cordillera conditioned on climate + SOIL ---\n")
+  # Report the constrained rank explicitly. If the conditioning set spans the
+  # cordillera contrast, dbrda leaves 0 constrained axes, anova returns an empty
+  # table, sprintf() yields character(0) and cat() prints NOTHING -- a silent
+  # non-result that looks identical to the line never running.
+  cpd<-dbrda(D~meta$cord+Condition(ENV2))
+  cat(sprintf("   constrained rank with climate+soil conditioned: %d  (0 = the cordillera term is not identifiable)\n",
+      ifelse(is.null(cpd$CCA), 0L, cpd$CCA$rank)))
+  cpc<-dbrda(D~meta$cord+Condition(CLIM))
+  cat(sprintf("   constrained rank with climate only conditioned : %d\n",
+      ifelse(is.null(cpc$CCA), 0L, cpc$CCA$rank)))
+  cat(sprintf("   variance inflation, clay in the full env set    : %.1f\n",
+      tryCatch(max(vif.cca(dbrda(D~ENV2))), error=function(e) NA_real_)))
+  rs<-tryCatch({cp<-dbrda(D~meta$cord+Condition(ENV2)); an<-anova(cp,permutations=hB)
+        sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$"Pr(>F)"[1])},
+        error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   cordillera | climate + soil : %s\n", rs))
+  rs2<-tryCatch({CD<-model.matrix(~meta$cord)[,-1,drop=FALSE]
+        cp<-dbrda(D~SOIL+Condition(cbind(CLIM,CD))); an<-anova(cp,permutations=hB)
+        sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$"Pr(>F)"[1])},
+        error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   soil | climate + cordillera : %s\n", rs2))
+  rs3<-tryCatch({cp<-dbrda(D~SOIL+Condition(CLIM)); an<-anova(cp,permutations=hB)
+        sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$"Pr(>F)"[1])},
+        error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   soil | climate (no cordillera) : %s\n", rs3))
+  cat("\n  --- SAME TESTS with cordillera-BLIND soil PCs ---\n")
+  for (v in colnames(SPC)) cat(sprintf("   %-8s R2 vs cordillera = %.3f\n", v,
+      summary(lm(SPC[,v] ~ meta$cord))$r.squared))
+  cat(sprintf("   VIF max, climate + soil PCs : %.1f\n",
+      tryCatch(max(vif.cca(dbrda(D~cbind(CLIM,SPC)))), error=function(e) NA_real_)))
+  p1<-tryCatch({cp<-dbrda(D~meta$cord+Condition(cbind(CLIM,SPC))); an<-anova(cp,permutations=hB)
+        sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$"Pr(>F)"[1])},
+        error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   cordillera | climate + soilPCs : %s\n", p1))
+  p2<-tryCatch({CD<-model.matrix(~meta$cord)[,-1,drop=FALSE]
+        cp<-dbrda(D~SPC+Condition(cbind(CLIM,CD))); an<-anova(cp,permutations=hB)
+        sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$"Pr(>F)"[1])},
+        error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   soilPCs | climate + cordillera : %s\n", p2))
+  # Most parsimonious soil representation: PC1 alone (44% of soil variance, one df).
+  # Reported whatever it shows -- three variants are on the record so the spread
+  # between them is visible rather than a single chosen number.
+  S1<-SPC[,1,drop=FALSE]
+  cat(sprintf("   VIF max, climate + soilPC1  : %.1f\n",
+      tryCatch(max(vif.cca(dbrda(D~cbind(CLIM,S1)))), error=function(e) NA_real_)))
+  p3<-tryCatch({cp<-dbrda(D~meta$cord+Condition(cbind(CLIM,S1))); an<-anova(cp,permutations=hB)
+        sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$"Pr(>F)"[1])},
+        error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   cordillera | climate + soilPC1 : %s\n", p3))
+  p4<-tryCatch({CD<-model.matrix(~meta$cord)[,-1,drop=FALSE]
+        cp<-dbrda(D~S1+Condition(cbind(CLIM,CD))); an<-anova(cp,permutations=hB)
+        sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$"Pr(>F)"[1])},
+        error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   soilPC1 | climate + cordillera : %s\n", p4))
+  cat("\n  ===== FINAL SET: literature + independence, 7 vars, mutual |r| < 0.7 and stand-level VIF < 5 =====\n")
+  # FINAL SET: the 8 literature+independence variables minus SOC, which was the
+  # only one exceeding VIF 5 at stand level (5.6). The remaining 7 are all < 5
+  # (max 4.01, clay) on the 12 stand means -- the level at which these variables
+  # actually vary. vif.cca reports much higher because it evaluates at tree level,
+  # where unbalanced stand representation (11 Coastal vs 32 Andean trees) inflates
+  # it; that is a design property, not collinearity among the variables.
+  LIT<-scale(ev[,c("bio5","bio18","bio6","cec","ph","nitro","clay")])
+  colnames(LIT)<-c("bio5","bio18","bio6","cec","ph","nitro","clay")
+  cat(sprintf("   max VIF in this set : %.1f\n",
+      tryCatch(max(vif.cca(dbrda(D~LIT))), error=function(e) NA_real_)))
+  for (v in colnames(LIT)) cat(sprintf("   %-6s R2 vs cordillera = %.3f\n", v,
+      summary(lm(LIT[,v] ~ meta$cord))$r.squared))
+  L1<-tryCatch({cp<-dbrda(D~meta$cord+Condition(LIT)); an<-anova(cp,permutations=hB)
+        sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$"Pr(>F)"[1])},
+        error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   cordillera | literature set : %s\n", L1))
+  L2<-tryCatch({CD<-model.matrix(~meta$cord)[,-1,drop=FALSE]
+        cp<-dbrda(D~LIT+Condition(CD)); an<-anova(cp,permutations=hB)
+        sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$"Pr(>F)"[1])},
+        error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   literature set | cordillera : %s\n", L2))
+  SO<-LIT[,c("cec","ph","nitro","clay")]; CL<-LIT[,c("bio5","bio18","bio6")]
+  L3<-tryCatch({CD<-model.matrix(~meta$cord)[,-1,drop=FALSE]
+        cp<-dbrda(D~SO+Condition(cbind(CL,CD))); an<-anova(cp,permutations=hB)
+        sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$"Pr(>F)"[1])},
+        error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   soil(4) | climate(3) + cordillera : %s\n", L3))
+  r1<-tryCatch({cp<-dbrda(D~meta$cord+Condition(CLIM)); an<-anova(cp,permutations=hB)
+      sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$`Pr(>F)`[1])},
+      error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   cordillera | climate : %s\n", r1))
+  r2_<-tryCatch({cp<-dbrda(D~CLIM+Condition(meta$cord)); an<-anova(cp,permutations=hB)
+      sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$`Pr(>F)`[1])},
+      error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   climate | cordillera : %s\n", r2_))
+  cat("\n  --- host genetics, same paired design ---\n")
+  Ks<-K[meta$tree,meta$tree]; Ks[is.na(Ks)]<-mean(Ks[upper.tri(Ks)],na.rm=TRUE); diag(Ks)<-max(Ks,na.rm=TRUE)
+  KIN<-cmdscale(as.dist(max(Ks)-Ks),k=3)
+  rk<-tryCatch({cp<-dbrda(D~KIN+Condition(CLIM+meta$comp)); an<-anova(cp,permutations=hB)
+      sprintf("R2 = %.4f  F = %.3f  p = %.4f", cp$CCA$tot.chi/cp$tot.chi, an$F[1], an$`Pr(>F)`[1])},
+      error=function(e) paste("failed:",conditionMessage(e)))
+  cat(sprintf("   kinship | climate + compartment : %s\n", rk))
+}
+run(stI,"ITS")
+run(st16,"16S",drop_org=TRUE)
+cat("\nDONE\n")

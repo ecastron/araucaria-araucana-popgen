@@ -1,0 +1,135 @@
+above-ground ITS libraries with tree_id and >=1000 reads: 228
+    
+     branch needle
+  BP     14     10
+  LM     13      9
+  LR     17     10
+  MC     12     12
+  PC     14     13
+  PN     16     11
+  RA     13     12
+  TH     13     12
+  TR     13     14
+
+range: Andean=174  Coastal=54
+
+
+TREE-LEVEL dataset: 79 trees (20 Coastal, 59 Andean) across 9 stands
+
+=============== A. dbRDA, Bray-Curtis ~ range ===============
+constrained R2 (range + compartment) = 0.0364  rank 2  F = 4.254  p = 0.0001
+  by term:
+Permutation test for dbrda under reduced model
+Terms added sequentially (first to last)
+Permutation: free
+Number of permutations: 9999
+
+Model: dbrda(formula = BC ~ range + compartment, data = m)
+             Df SumOfSqs      F Pr(>F)    
+range         1    1.688 3.7190  1e-04 ***
+compartment   1    2.173 4.7881  1e-04 ***
+Residual    225  102.123                  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+  range alone: R2 = 0.0159 (rank 1 -- one axis only)
+betadisper LIBRARY level F = 9.739 p = 0.0021 (context only)
+betadisper TREE level: Coastal 0.6055 (n=20), Andean 0.6495 (n=59) -> smaller group is LESS dispersed
+betadisper TREE level F = 7.874 p = 0.0060 -> dispersions differ; location effect is not clean
+stand explains R2 = 0.0738 (p = 0.0001)
+TREE-LEVEL range:  R2 = 0.0391  F = 3.129  p = 0.0001  (n = 79 trees)
+TREE-LEVEL stand:  R2 = 0.1701  F = 1.793  p = 0.0001  (reported, not the unit)
+  dbRDA1 = 2.19% of total inertia, dbRDA2 = 1.45%
+
+=============== B. ORDER composition by site ===============
+Order assigned for 3282 of 4061 ASVs (80.8%), 90.7% of reads | 126 orders
+   Helotiales Mycosphaerellales Boletales Agaricales Pleosporales
+PN      15.20              5.68     10.10      17.72         1.07
+TR      13.33              9.83      5.06      16.73         1.38
+BP       6.98              5.54      9.38       4.09         6.93
+LM       6.65              0.79      5.34       0.92         4.50
+LR       6.34              7.91     12.30      12.28         8.73
+MC       6.12              9.31      8.55       5.33         7.87
+PC       7.87              8.66      5.39       4.36         5.82
+RA       2.47             25.90      4.98       0.06        11.93
+TH      18.68              7.84      6.29       3.95        10.18
+   Cladosporiales Hypocreales Filobasidiales Saccharomycetales Dothideales
+PN           4.20       10.03           4.42              1.48        0.36
+TR           1.05        6.90           1.80              0.87        1.45
+BP          12.23        3.63           0.68              0.82       10.03
+LM           5.20        6.04           8.45             13.89        2.82
+LR           6.35        6.36           3.86              2.37        4.32
+MC           4.26        5.54           4.35              2.63        0.37
+PC          13.10        2.75           1.37              9.71        1.32
+RA           3.37        0.71          14.97              1.20        3.43
+TH           2.41        2.77           1.50              1.92        1.26
+   other assigned unassigned
+PN          20.18       9.57
+TR          35.29       6.33
+BP          19.35      20.33
+LM          37.78       7.62
+LR          21.66       7.53
+MC          39.51       6.15
+PC          26.18      13.48
+RA          25.07       5.91
+TH          37.07       6.11
+
+=============== C. Shannon diversity ===============
+rarefying to the shallowest retained library: 1075 reads
+Shannon, tree level: 79 trees
+  TREE-LEVEL range: Coastal (n=20, med 1.94) vs Andean (n=59, med 2.18): p = 0.1184
+  needle  Coastal (n=25, med 2.22) vs Andean (n=78, med 1.96): W = 1043, p = 0.6036
+  branch  Coastal (n=29, med 1.78) vs Andean (n=96, med 2.30): W = 1026, p = 0.0325
+  needle vs branch, PAIRED within tree (n=68 pairs): V = 677, p = 0.0025
+
+  tree means within each compartment
+  needle  Coastal trees (n=18, med 2.00) vs Andean (n=53, med 1.96): p = 0.6966
+  branch  Coastal trees (n=18, med 1.76) vs Andean (n=58, med 2.34): p = 0.0301
+
+  multiple-testing adjustment over the reported tests
+                                  test           p       p_BH     p_bonf
+                   range within needle 0.603599825 0.69659790 1.00000000
+                   range within branch 0.032536559 0.06507312 0.19521935
+                  compartment (paired) 0.002464388 0.01478633 0.01478633
+      range within needle (tree means) 0.696597901 0.69659790 1.00000000
+      range within branch (tree means) 0.030107786 0.06507312 0.18064671
+ range (tree level, both compartments) 0.118395304 0.17759296 0.71037182
+
+=============== D. host genetics, SNP matrix ===============
+SNP matrix: 177 individuals x 68109 SNPs | missing 62.5%
+collapsed to 164 trees
+per-tree call rate: min 0.013 median 0.373 max 0.764 | 14 trees below 0.20
+retained 150 trees and 7342 SNPs at call rate >= 0.5 (missing now 44.5%)
+SNP PCA: PC1 2.6%  PC2 1.4%  PC3 1.3%  PC4 1.2%
+  CONFOUND CHECK -- correlation of each genetic PC with that tree's call rate:
+    PC1  r = +0.194
+    PC2  r = +0.104
+    PC3  r = -0.017
+    PC4  r = -0.085
+    PC5  r = -0.022
+    PC6  r = +0.048
+  agreement with the PLINK PCA on PC1 (150 shared trees): |r| = 0.934
+trees with BOTH fungal and SNP data: 46
+
+  tree-level design: 46 trees, one row each (no pseudoreplication)
+  stands represented: BP LM LR MC PC PN RA TH TR
+  k=2  genetic PCs, no conditioning   R2 = 0.0629  F = 1.442  p = 0.0029
+  k=2  genetic PCs | stand            R2 = 0.0371  F = 0.922  p = 0.6876
+  k=2  genetic PCs | range            R2 = 0.0372  F = 0.859  p = 0.8724
+  k=4  genetic PCs, no conditioning   R2 = 0.1116  F = 1.288  p = 0.0032
+  k=4  genetic PCs | stand            R2 = 0.0803  F = 1.001  p = 0.4787
+  k=4  genetic PCs | range            R2 = 0.0868  F = 1.009  p = 0.4401
+  k=8  genetic PCs, no conditioning   R2 = 0.2113  F = 1.239  p = 0.0007
+  k=8  genetic PCs | stand            R2 = 0.1670  F = 1.053  p = 0.2515
+  k=8  genetic PCs | range            R2 = 0.1855  F = 1.096  p = 0.0765
+
+  how much of each genetic axis is simply stand identity
+    PC1  ~ stand  R2 = 0.865
+    PC2  ~ stand  R2 = 0.703
+    PC3  ~ stand  R2 = 0.431
+    PC4  ~ stand  R2 = 0.139
+
+  positive controls on the same tree-level data
+  range       R2 = 0.0533  p = 0.0001
+  site_code   R2 = 0.2578  p = 0.0001
+
+DONE

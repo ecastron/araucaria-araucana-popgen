@@ -1,0 +1,4 @@
+"set","table","n_samples","n_asv","pct_single_sample","max_prevalence","n_asv_ge50pct","median_reads"
+"fig5","merged",228,3153,67.7132889311766,47.8070175438597,0,10780
+"old164","merged",164,2645,68.3931947069943,43.9024390243902,0,12058.5
+"paired","merged",86,1889,69.8253043938592,47.6744186046512,0,14145

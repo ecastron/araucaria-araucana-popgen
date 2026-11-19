@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the article and this archive."
+title: "Code and derived data for: Population history and adaptive divergence in Araucaria araucana"
+authors:
+  - family-names: Castro-Nallar
+    given-names: Eduardo
+    affiliation: "Centro de Ecología Integrativa and Instituto de Ciencias Biológicas, Universidad de Talca, Chile; Cape Horn International Center, Universidad de Magallanes, Chile"
+license: MIT
+repository-code: "https://github.com/ecastron/araucaria-araucana-popgen"
+keywords: [Araucaria araucana, RAD-seq, population genomics, ABC random forest, QST-FST, endophytes]

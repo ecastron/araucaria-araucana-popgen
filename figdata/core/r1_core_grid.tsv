@@ -1,0 +1,129 @@
+level	data	detection	prevalence	n_core	mean_core_abundance
+ASV	relative abundance	0	0.1	62	0.496576445265251
+ASV	relative abundance	1e-04	0.1	57	0.488629127282143
+ASV	relative abundance	0.001	0.1	41	0.416884186845411
+ASV	relative abundance	0.01	0.1	18	0.288979460919306
+ASV	relative abundance	0	0.25	15	0.252154551450905
+ASV	relative abundance	1e-04	0.25	13	0.227275950285072
+ASV	relative abundance	0.001	0.25	8	0.182000532060977
+ASV	relative abundance	0.01	0.25	2	0.0831149101265907
+ASV	relative abundance	0	0.4	5	0.139664238059199
+ASV	relative abundance	1e-04	0.4	5	0.139664238059199
+ASV	relative abundance	0.001	0.4	1	0.021612208615178
+ASV	relative abundance	0.01	0.4	0	0
+ASV	relative abundance	0	0.5	3	0.0842663734842761
+ASV	relative abundance	1e-04	0.5	2	0.0620817334151504
+ASV	relative abundance	0.001	0.5	0	0
+ASV	relative abundance	0.01	0.5	0	0
+ASV	relative abundance	0	0.6	0	0
+ASV	relative abundance	1e-04	0.6	0	0
+ASV	relative abundance	0.001	0.6	0	0
+ASV	relative abundance	0.01	0.6	0	0
+ASV	relative abundance	0	0.7	0	0
+ASV	relative abundance	1e-04	0.7	0	0
+ASV	relative abundance	0.001	0.7	0	0
+ASV	relative abundance	0.01	0.7	0	0
+ASV	relative abundance	0	0.8	0	0
+ASV	relative abundance	1e-04	0.8	0	0
+ASV	relative abundance	0.001	0.8	0	0
+ASV	relative abundance	0.01	0.8	0	0
+ASV	relative abundance	0	0.9	0	0
+ASV	relative abundance	1e-04	0.9	0	0
+ASV	relative abundance	0.001	0.9	0	0
+ASV	relative abundance	0.01	0.9	0	0
+ASV	rarefied to 1062	0	0.1	42	0.42063210646999
+ASV	rarefied to 1062	1e-04	0.1	42	0.42063210646999
+ASV	rarefied to 1062	0.001	0.1	38	0.408682599342836
+ASV	rarefied to 1062	0.01	0.1	19	0.312538905830162
+ASV	rarefied to 1062	0	0.25	11	0.219361904987038
+ASV	rarefied to 1062	1e-04	0.25	11	0.219361904987038
+ASV	rarefied to 1062	0.001	0.25	7	0.15894459809785
+ASV	rarefied to 1062	0.01	0.25	2	0.0832052888290035
+ASV	rarefied to 1062	0	0.4	2	0.0832052888290035
+ASV	rarefied to 1062	1e-04	0.4	2	0.0832052888290035
+ASV	rarefied to 1062	0.001	0.4	0	0
+ASV	rarefied to 1062	0.01	0.4	0	0
+ASV	rarefied to 1062	0	0.5	0	0
+ASV	rarefied to 1062	1e-04	0.5	0	0
+ASV	rarefied to 1062	0.001	0.5	0	0
+ASV	rarefied to 1062	0.01	0.5	0	0
+ASV	rarefied to 1062	0	0.6	0	0
+ASV	rarefied to 1062	1e-04	0.6	0	0
+ASV	rarefied to 1062	0.001	0.6	0	0
+ASV	rarefied to 1062	0.01	0.6	0	0
+ASV	rarefied to 1062	0	0.7	0	0
+ASV	rarefied to 1062	1e-04	0.7	0	0
+ASV	rarefied to 1062	0.001	0.7	0	0
+ASV	rarefied to 1062	0.01	0.7	0	0
+ASV	rarefied to 1062	0	0.8	0	0
+ASV	rarefied to 1062	1e-04	0.8	0	0
+ASV	rarefied to 1062	0.001	0.8	0	0
+ASV	rarefied to 1062	0.01	0.8	0	0
+ASV	rarefied to 1062	0	0.9	0	0
+ASV	rarefied to 1062	1e-04	0.9	0	0
+ASV	rarefied to 1062	0.001	0.9	0	0
+ASV	rarefied to 1062	0.01	0.9	0	0
+Family	relative abundance	0	0.1	67	0.799955134173325
+Family	relative abundance	1e-04	0.1	65	0.794434628168127
+Family	relative abundance	0.001	0.1	54	0.749659841511499
+Family	relative abundance	0.01	0.1	25	0.619377051174002
+Family	relative abundance	0	0.25	25	0.614921418119673
+Family	relative abundance	1e-04	0.25	23	0.602498347876154
+Family	relative abundance	0.001	0.25	17	0.544058225717853
+Family	relative abundance	0.01	0.25	6	0.318415864499911
+Family	relative abundance	0	0.4	14	0.470704805815135
+Family	relative abundance	1e-04	0.4	13	0.452225113255865
+Family	relative abundance	0.001	0.4	5	0.256365708505254
+Family	relative abundance	0.01	0.4	3	0.151287073348268
+Family	relative abundance	0	0.5	8	0.32622563880629
+Family	relative abundance	1e-04	0.5	8	0.32622563880629
+Family	relative abundance	0.001	0.5	4	0.215499396786704
+Family	relative abundance	0.01	0.5	0	0
+Family	relative abundance	0	0.6	5	0.218869244249299
+Family	relative abundance	1e-04	0.6	4	0.160663046284532
+Family	relative abundance	0.001	0.6	2	0.0930808753835019
+Family	relative abundance	0.01	0.6	0	0
+Family	relative abundance	0	0.7	2	0.0551030925447602
+Family	relative abundance	1e-04	0.7	2	0.0551030925447602
+Family	relative abundance	0.001	0.7	0	0
+Family	relative abundance	0.01	0.7	0	0
+Family	relative abundance	0	0.8	1	0.051733245082165
+Family	relative abundance	1e-04	0.8	1	0.051733245082165
+Family	relative abundance	0.001	0.8	0	0
+Family	relative abundance	0.01	0.8	0	0
+Family	relative abundance	0	0.9	0	0
+Family	relative abundance	1e-04	0.9	0	0
+Family	relative abundance	0.001	0.9	0	0
+Family	relative abundance	0.01	0.9	0	0
+Family	rarefied to 1062	0	0.1	57	0.760253409923646
+Family	rarefied to 1062	1e-04	0.1	57	0.760253409923646
+Family	rarefied to 1062	0.001	0.1	51	0.742291720839342
+Family	rarefied to 1062	0.01	0.1	24	0.610634391571914
+Family	rarefied to 1062	0	0.25	18	0.549078473551915
+Family	rarefied to 1062	1e-04	0.25	18	0.549078473551915
+Family	rarefied to 1062	0.001	0.25	15	0.528536195226501
+Family	rarefied to 1062	0.01	0.25	6	0.318543208125507
+Family	rarefied to 1062	0	0.4	8	0.362078339597664
+Family	rarefied to 1062	1e-04	0.4	8	0.362078339597664
+Family	rarefied to 1062	0.001	0.4	5	0.256400255301042
+Family	rarefied to 1062	0.01	0.4	3	0.163239013781528
+Family	rarefied to 1062	0	0.5	4	0.215142346090506
+Family	rarefied to 1062	1e-04	0.5	4	0.215142346090506
+Family	rarefied to 1062	0.001	0.5	4	0.215142346090506
+Family	rarefied to 1062	0.01	0.5	0	0
+Family	rarefied to 1062	0	0.6	2	0.093488247484418
+Family	rarefied to 1062	1e-04	0.6	2	0.093488247484418
+Family	rarefied to 1062	0.001	0.6	1	0.0519033323089773
+Family	rarefied to 1062	0.01	0.6	0	0
+Family	rarefied to 1062	0	0.7	1	0.0519033323089773
+Family	rarefied to 1062	1e-04	0.7	1	0.0519033323089773
+Family	rarefied to 1062	0.001	0.7	0	0
+Family	rarefied to 1062	0.01	0.7	0	0
+Family	rarefied to 1062	0	0.8	0	0
+Family	rarefied to 1062	1e-04	0.8	0	0
+Family	rarefied to 1062	0.001	0.8	0	0
+Family	rarefied to 1062	0.01	0.8	0	0
+Family	rarefied to 1062	0	0.9	0	0
+Family	rarefied to 1062	1e-04	0.9	0	0
+Family	rarefied to 1062	0.001	0.9	0	0
+Family	rarefied to 1062	0.01	0.9	0	0

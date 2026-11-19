@@ -1,0 +1,8 @@
+usable SNPs (>=20 chromosomes scored in both ranges): 77,438 of 78,026
+  only in Coastal : 14,219
+  in both ranges  : 27,083
+  only in Andean  : 23,295
+  total plotted   : 64,597
+
+  count ratio Coastal-only : Andean-only = 0.610
+  (for contrast, the private_ratio summary statistic, >0.05/<0.01 thresholds = 0.7738)
