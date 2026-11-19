@@ -4,6 +4,7 @@ title: "Code and derived data for: Population history and adaptive divergence in
 authors:
   - family-names: Castro-Nallar
     given-names: Eduardo
+    orcid: "https://orcid.org/0000-0003-4384-8661"
     affiliation: "Centro de Ecología Integrativa and Instituto de Ciencias Biológicas, Universidad de Talca, Chile; Cape Horn International Center, Universidad de Magallanes, Chile"
 license: MIT
 repository-code: "https://github.com/ecastron/araucaria-araucana-popgen"
