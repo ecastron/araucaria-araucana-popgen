@@ -1,0 +1,10 @@
+Analysis	Median (kyr)	95% credible interval (kyr)	P(before LGM onset)	OOB R2
+Primary: isolation and contact simulations pooled	66	6 to 1,245	0.85	0.80
+Isolation simulations only	62	9 to 386	0.83	0.79
+Secondary-contact simulations only	96	6 to 1,940	0.89	0.79
+Estimation on a log10 scale	47	8 to 763	0.79	0.93
+Broad substitution-rate prior (1 × 10^−10^ to 2 × 10^−9^)	96	8 to 7,366	0.84	0.71
+Split-age prior floor raised to 10 kyr	69	13 to 1,113	0.87	0.78
+Observed time-scale statistics from all loci	65	8 to 1,307	0.87	0.80
+Generation time below 180 years	54	6 to 1,406	0.82	0.77
+Generation time 180 years or more	130	17 to 3,357	0.95	0.78

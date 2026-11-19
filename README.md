@@ -42,10 +42,12 @@ each script (final, diagnostic, superseded or exploratory) and the files it writ
 ```bash
 python figures/build_F1_journal.py      # Figure 1
 python figures/build_F2_journal.py      # Figure 2
-python figures/build_F3_journal.py      # Figure 3
-python figures/build_F4_journal.py      # Figure 4 (reads figdata/abcrf_results.json)
+python figures/build_F4_journal.py      # Figure 3, demography (file F4_demographic_history; reads figdata/abcrf_results.json)
+python figures/build_F3_journal.py      # Figure 4, traits (file F3_qst_fst_selection)
 python figures/build_F5_fungal.py       # Figure 5
 python figures/build_supp_journal.py    # Figures S1 to S4
+python figures/range_gap.py             # distance between the Coastal and Andean forests (figdata/range_gap.json)
+python figures/split_sensitivity_table.py  # Table S5, sensitivity of the split age (figdata/split_sensitivity.tsv)
 Rscript abcrf/abcrf_analysis.R          # ABC-RF model choice and estimation (writes figdata/abcrf_*)
 ```
 

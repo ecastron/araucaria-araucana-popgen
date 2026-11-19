@@ -46,6 +46,12 @@ def save(fig,name):
 # 12 shape statistics plus 3 log clock statistics. The shape-only inputs (abc_for_fig/abc_supp) are retired.
 # abcrf 2.0 results (abcrf/abcrf_analysis.R); the confusion matrices and importances come from the first
 # of ten replicate forests, and the LDA axes abcrf adds by default appear in the importance panel
+NICE={"ibd_r":"IBD correlation","ibd_r2":"IBD $R^2$","fst_between_within_ratio":"$F_{ST}$ between / within",
+      "fst_cv":"$F_{ST}$ coefficient of variation","coastal_excess_sd":"between-range excess",
+      "pc1_pc2_ratio":"PC1 / PC2 eigenvalues","pc1_share":"PC1 share","f3_frac_neg":"negative $f_3$ fraction",
+      "private_ratio":"private-allele ratio","xgap_min_ratio":"minimum between-range $F_{ST}$",
+      "xgap_corridor_r":"between-range $F_{ST}$ gradient","lowfreq_cor":"low-frequency correlation",
+      "log_piC":"log $\\pi$ Coastal","log_piA":"log $\\pi$ Andes","log_dxy":"log $d_{XY}$"}
 AB=json.load(open("figdata/abcrf_results.json"))
 RT=pd.read_csv("abcrf/reftable_sim9.csv"); OB=pd.read_csv("abcrf/observed_sim9.csv",index_col=0)
 STAT=list(OB.columns); X=RT[STAT].values; obs=OB.loc["primary",STAT].values
@@ -67,7 +73,7 @@ for j in range(len(STAT)):
     ax.plot([j,j],[0.25,0.75],color=MUTED,lw=6,alpha=.55,solid_capstyle="round")
     ax.plot(j,0.5,"o",ms=4.5,color=MUTED)
     ax.plot(j,np.mean(v<=obs[j]),"*",ms=17,color=GREEN,markeredgecolor="white",markeredgewidth=0.8,zorder=5)
-ax.set_xticks(range(len(STAT))); ax.set_xticklabels([s.replace("_"," ") for s in STAT],rotation=34,ha="right",fontsize=8)
+ax.set_xticks(range(len(STAT))); ax.set_xticklabels([NICE.get(s,s) for s in STAT],rotation=34,ha="right",fontsize=8)
 ax.set_ylim(-0.2,1.2); ax.set_yticks([0,.5,1]); ax.set_yticklabels(["2.5%","50%","97.5%"])
 ax.set_ylabel("percentile of the observed value\nwithin the simulated distribution")
 tag(ax,"A")
@@ -81,13 +87,13 @@ def cmplot(ax,cm,labs,t,acc):
                     color="white" if n[i,j]>0.5 else INK)
     ax.set_xticks(range(len(labs))); ax.set_xticklabels(labs,fontsize=9.5)
     ax.set_yticks(range(len(labs))); ax.set_yticklabels(labs,fontsize=9.5)
-    ax.set_xlabel("classified as"); ax.set_ylabel("true model")
-    tag(ax,t,f"OOB {acc:.3f}")
-cmplot(fig.add_subplot(gs[1,0]),A["cm4"],["H1′","H1b′","H2′","H3′"],"B",G9["acc4"])
+    ax.set_xlabel("classified as"); ax.set_ylabel("true scenario")
+    tag(ax,t,f"accuracy {acc:.3f}")
+cmplot(fig.add_subplot(gs[1,0]),A["cm4"],["H1","H1b","H2","H3"],"B",G9["acc4"])
 ax=fig.add_subplot(gs[1,1]); style(ax)
 o=np.argsort(IMPv)[::-1]
 ax.barh(range(len(o)),IMPv[o]/IMPv.sum(),color=GREEN,alpha=.85)
-ax.set_yticks(range(len(o))); ax.set_yticklabels([IMPn[i].replace("_"," ") for i in o],fontsize=8.5)
+ax.set_yticks(range(len(o))); ax.set_yticklabels([NICE.get(IMPn[i],IMPn[i]) for i in o],fontsize=8.5)
 ax.invert_yaxis(); ax.set_xlabel("variable importance (share of total)")
 tag(ax,"C")
 cmplot(fig.add_subplot(gs[2,0]),A["cm1"],["one\nrefugium","two\nrefugia"],"D",G9["acc1"])
@@ -236,8 +242,8 @@ fig=plt.figure(figsize=(6.8,6.4)); fig.patch.set_facecolor(BG)
 ax=fig.add_axes([0.14,0.12,0.82,0.84]); style(ax)
 lim=[0.06,0.27]
 ax.plot(lim,lim,color=MUTED,lw=1.0,ls="--",zorder=1,label="1:1")
-ax.scatter(x[~bt],y[~bt],s=52,c=COAST,edgecolor="white",lw=0.7,zorder=3,label=f"within range (n = {(~bt).sum()})")
-ax.scatter(x[bt],y[bt],s=52,c=AND,edgecolor="white",lw=0.7,marker="D",zorder=3,label=f"between ranges (n = {bt.sum()})")
+ax.scatter(x[~bt],y[~bt],s=52,c=AND,edgecolor="white",lw=0.7,zorder=3,label=f"within range (n = {(~bt).sum()})")
+ax.scatter(x[bt],y[bt],s=52,c=COAST,edgecolor="white",lw=0.7,marker="D",zorder=3,label=f"between ranges (n = {bt.sum()})")
 ax.set_xlim(lim); ax.set_ylim(lim)
 ax.set_xlabel("$F_{ST}$, ipyrad de novo"); ax.set_ylabel("$F_{ST}$, bowtie2 + FreeBayes on AraucariaDB")
 ax.legend(frameon=True,facecolor=PANEL,edgecolor=RULE,fontsize=9,loc="upper left")

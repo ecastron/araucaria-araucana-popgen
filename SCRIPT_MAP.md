@@ -30,6 +30,7 @@ Path conventions:
 | order | script | purpose | output | status |
 |---|---|---|---|---|
 | 1 | `figures/cache_distribution.py` | Caches the CONAF Catastro *Araucaria* distribution (dominant-type and any-component definitions) and computes sampling coverage under each | `figdata/distribution_cache.pkl`, `figdata/stand_coords.npz` | FINAL |
+| 1b | `figures/range_gap.py` | Shortest distance between Coastal and Andean *Araucaria* forest polygons (dominant type and any component) and between the closest sampled stands | `figdata/range_gap.json` | FINAL |
 | 2 | `environment/pull_chelsa.py` | CHELSA v2.1 bioclim variables per tree, read remotely | `environment/chelsa_per_tree.tsv` | FINAL |
 | 3 | `environment/pull_soil.py` | SoilGrids 2.0 covariates per stand (REST point API) | `environment/soil_per_stand.tsv` | FINAL |
 | 4 | `environment/pull_terrain.py` | Per-tree terrain covariates from SRTM 30 m | `environment/terrain_per_tree.tsv` | FINAL |
@@ -130,12 +131,12 @@ Reference-genome control on individual-level structure: `cluster/ref/fb_fst_indi
 
 ---
 
-## 5. QST-FST comparison with common-garden traits (Figure 3)
+## 5. QST-FST comparison with common-garden traits (Figure 4)
 
 | order | script | purpose | output | status |
 |---|---|---|---|---|
 | 1 | `figures/qst_fst_test.py` | QST from McIntosh et al. (2025) Table S4 nested ANOVA (values hardcoded) across a range of h2, against the regional Hudson FST | `figdata/qst_fst.json` | FINAL |
-| 2 | `figures/build_F3_journal.py` | Builds Figure 3 (QST across h2, per-trait crossover heritability) | `figures/journal/F3_qst_fst_selection.{pdf,png}` | FINAL |
+| 2 | `figures/build_F3_journal.py` | Builds Figure 4 (QST across h2, per-trait crossover heritability); file name kept from the earlier numbering | `figures/journal/F3_qst_fst_selection.{pdf,png}` | FINAL |
 | | `figures/qst_fst.py` | Earlier QST vs FST using `figdata/host_fst_pairs.tsv` (QST as lower bounds) | | SUPERSEDED |
 
 Note: `qst_fst_test.py` hardcodes the regional FST (0.1059, SE 0.0011). `cluster/ref/regional_fst.py`
@@ -143,7 +144,7 @@ computes that quantity, but no file records the link.
 
 ---
 
-## 6. Demographic inference (Figure 4, Figure S1, Tables S3 and S4)
+## 6. Demographic inference (Figure 3, Figure S1, Tables S3 to S5)
 
 ### 6a. FINAL chain
 
@@ -161,10 +162,11 @@ computes that quantity, but no file records the link.
 | 10 | `cluster/abc/export_reftables.py` | Exports the balanced sim9 and sim8 reference tables as CSV | `abcrf/reftable_sim9.csv`, `observed_sim9.csv`, `reftable_sim8.csv`, `observed_sim8.csv` |
 | 11 | `abcrf/abcrf_analysis.R` | abcrf 2.0 model choice (grouped and four-way, 10 replicate forests) and regAbcrf parameter estimation | `figdata/abcrf_results.json`, `figdata/abcrf_weights_{avg,iso,con,broad}.csv` |
 | 12 | `abcrf/abcrf_logscale.R` | Control: regAbcrf on log10 scale parameters | `figdata/abcrf_logscale.json` |
-| 13 | `figures/build_F4_journal.py` | Builds Figure 4 from `abcrf_results.json` and the weights | `figures/journal/F4_demographic_history.{pdf,png}` |
+| 13 | `figures/build_F4_journal.py` | Builds Figure 3 from `abcrf_results.json` and the weights; file name kept from the earlier numbering | `figures/journal/F4_demographic_history.{pdf,png}` |
 | 14 | `figures/build_supp_journal.py` | Builds S1 (model choice and chain architecture) from `abcrf_results.json` and the sim9 tables | `figures/supplementary/journal/` |
+| 15 | `figures/split_sensitivity_table.py` | Table S5: split age under each sensitivity analysis, from `abcrf_results.json` and `abcrf_logscale.json` | `figdata/split_sensitivity.tsv` |
 
-**Tables S3 and S4** are written by the supplementary-document builder, which is not distributed here because it holds manuscript text. Table S3 lists the priors coded in `cluster/abc/sim9.py`; Table S4 reads `figdata/abcrf_results.json` (written by `abcrf/abcrf_analysis.R`).
+**Tables S3 to S5** are written by the supplementary-document builder, which is not distributed here because it holds manuscript text. Table S3 lists the priors coded in `cluster/abc/sim9.py`; Table S4 reads `figdata/abcrf_results.json` (written by `abcrf/abcrf_analysis.R`); Table S5 reads `figdata/split_sensitivity.tsv`.
 
 ## 7. Fungal endophyte community from ITS1 (Figure 5, Figure S4)
 

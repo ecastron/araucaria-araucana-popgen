@@ -1,0 +1,46 @@
+{
+ "dominant": {
+  "km": 83.95230717731847,
+  "coastal_point": [
+   -72.98495483398438,
+   -37.80049133300781
+  ],
+  "andean_point": [
+   -72.05828094482422,
+   -37.98091506958008
+  ],
+  "n_coastal_rings": 405,
+  "n_andean_rings": 7363
+ },
+ "any_component": {
+  "km": 48.050376527352775,
+  "coastal_point": [
+   -72.55850982666016,
+   -38.18488311767578
+  ],
+  "andean_point": [
+   -72.05792999267578,
+   -38.009376525878906
+  ],
+  "n_coastal_rings": 642,
+  "n_andean_rings": 11347
+ },
+ "any_component_without_valley_ring": {
+  "km": 83.95230717731847,
+  "coastal_point": [
+   -72.98495483398438,
+   -37.80049133300781
+  ],
+  "andean_point": [
+   -72.05828094482422,
+   -37.98091506958008
+  ],
+  "n_coastal_rings": 640,
+  "n_andean_rings": 11347
+ },
+ "valley_rings_lon": [
+  -72.55916595458984,
+  -72.99955749511719
+ ],
+ "closest_sampled_pair_PN_TH_km": 117.31129009665861
+}

@@ -76,9 +76,9 @@ sl,ic=np.polyfit(x,y,1); xs=np.linspace(x.min(),x.max(),100)
 axD.plot(xs,ic+sl*xs,color=MUTED,lw=1.4,ls="--",zorder=2,
          label=f"all pairs  r = +{np.corrcoef(x,y)[0,1]:.3f}")
 axD.scatter(np.log(w["km"]),w["fst"],s=58,c=AND,edgecolor="white",lw=0.7,zorder=3,
-            label=f"within cordillera (n = {len(w)})")
+            label=f"within range (n = {len(w)})")
 axD.scatter(np.log(b["km"]),b["fst"],s=58,c=COAST,edgecolor="white",lw=0.7,marker="D",
-            zorder=3,label=f"between cordilleras (n = {len(b)})")
+            zorder=3,label=f"between ranges (n = {len(b)})")
 axD.axhspan(w["fst"].max(),b["fst"].min(),color=GREEN,alpha=0.10,zorder=1)
 tk=[10,20,50,100,200]; axD.set_xticks(np.log(tk)); axD.set_xticklabels(tk)
 axD.set_xlabel("geographic distance (km, log scale)"); axD.set_ylabel(r"pairwise Hudson $F_{ST}$")
