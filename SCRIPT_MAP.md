@@ -1,6 +1,7 @@
 # Script map
 
-Maps each Results/Methods unit of the paper to the scripts in this repository, in run order.
+Maps each Results/Methods unit of the paper to the scripts in this repository, in run order. Only the scripts on the path
+to the reported results and figures are included; development, exploratory and superseded scripts are not distributed.
 Sources: script header comments and the project log (`ANALYSIS_SPEC.md`). Where neither states a
 purpose, the script is listed under "Unclassified".
 
@@ -10,8 +11,6 @@ Status labels:
   on the path to one.
 - **DIAGNOSTIC**: a control or mechanism test whose outcome is recorded in the project log.
   Whether each one is cited in the manuscript has not been checked here.
-- **SUPERSEDED**: replaced by a later script or a later decision; kept as history.
-- **EXPLORATORY**: a side analysis that did not enter the paper.
 
 Path conventions:
 
@@ -38,10 +37,7 @@ Path conventions:
 | 6 | `environment/pull_soil_raster.py` | SoilGrids surfaces for the four final soil variables | `figdata/soilgrids_soil.npz` | FINAL |
 | 7 | `figures/build_F1_journal.py` | Builds Figure 1 | `figures/journal/F1_distribution_sampling.{pdf,png}` | FINAL |
 
-`cluster/pull_chelsa.py`, `cluster/pull_chelsa_rasters.py` and `cluster/pull_soil_raster.py` are
-byte-identical to the `environment/` copies.
-
-**Producer (reconstructed 19 Nov 2026):** `figures/reconstructed/env_contrast_all.py` writes `figdata/env_contrast_all.tsv` from the files in `environment/` (stand means, Coastal = VA, TR, PN; d = Coastal minus Andean mean divided by the SD across the 12 stand means; exact permutation p over all 220 labelings). Means and d reproduce exactly; 3 of 39 permutation p-values (pH at two depths, sand), none used in the paper, differ by tie handling. `figdata/soilgrids_clay.npz` comes from `cluster/pull_soil_raster.py`.
+**Producer (reconstructed 19 Nov 2026):** `figures/reconstructed/env_contrast_all.py` writes `figdata/env_contrast_all.tsv` from the files in `environment/` (stand means, Coastal = VA, TR, PN; d = Coastal minus Andean mean divided by the SD across the 12 stand means; exact permutation p over all 220 labelings). Means and d reproduce exactly; 3 of 39 permutation p-values (pH at two depths, sand), none used in the paper, differ by tie handling. `figdata/soilgrids_clay.npz` comes from `environment/pull_soil_raster.py`.
 
 ---
 
@@ -59,7 +55,6 @@ byte-identical to the `environment/` copies.
 | order | script | purpose | output | status |
 |---|---|---|---|---|
 | 1 | `cluster/ipyrad_sweep.sh` | ipyrad sweep over clustering threshold on the 30 replicate-pair libraries | sweep assemblies | FINAL (threshold choice) |
-| 2 | `cluster/analyse_ipyrad.py` | Replicate concordance across the ipyrad sweep | | SUPERSEDED (the "replicate pairs" turned out to be relatives) |
 | 3 | `cluster/r80_and_nulls.py` | Re-derives the clustering threshold without replicates (r80 plus null expectations) | | FINAL (replaces step 2 as the justification) |
 | 4 | `cluster/ipyrad_full.sh` | Full ipyrad assembly at the chosen threshold (ct 0.91) | `full_ct091.vcf`, `.loci` | FINAL |
 | 5 | `cluster/filter_vcf_callrate.py` | Applies per-analysis call-rate filters to the permissive assembly | `full_ct091.cr30.vcf` (78,802 SNPs, 177 libraries) | FINAL |
@@ -84,21 +79,6 @@ byte-identical to the `environment/` copies.
 
 **Producer (reconstructed 19 Nov 2026):** `cluster/reconstructed/make_fb_regions.py` writes `rad_regions.bed`, `rad_regions_clamped.bed` and the 200 `fb_chunks/chunk_NNN` files from `loci_vs_genome.paf` (primary alignments, query coverage >= 0.8, identity >= 0.9, 50 bp padding, merged, clamped to contig length, then GNU `split -n l/200`); all byte-identical to the originals.
 
-Earlier reference-mapping work on an 8-library subset (minimap2): `cluster/ref/index_genome.sh`,
-`map_balance.sh`, `bt2_map.sh`, `bwa_check.sh`, `dedup_all.sh`, `feasibility.sh`, `callsnps.sh`
-(bcftools on callable positions). These are DIAGNOSTIC and feed unit 3.
-
-### 2d. SUPERSEDED: Stacks assembly (replaced by ipyrad)
-
-`cluster/fix_deflines.sh` (Stacks-compatible read names), `cluster/rad_clean_array.sh`
-(process_radtags), `cluster/rad_sweep_array.sh` (M sweep), `cluster/minitest_denovo.sh`,
-`cluster/test_dedup.sh`, `cluster/rerun_populations.sh`, `cluster/rerun_populations_r30.sh`,
-`cluster/analyse_sweep.py`, `cluster/pick_and_assemble.sh`, `cluster/snp_filter_grid.py` with
-`cluster/run_filter_grid.sh` (filter grid scored by replicate concordance),
-`cluster/run_filter_and_retest.sh`.
-
----
-
 ## 3. Genotype-quality diagnosis (Figures S2, S3)
 
 ### 3a. Figure data and builders (FINAL)
@@ -113,61 +93,13 @@ Earlier reference-mapping work on an 8-library subset (minimap2): `cluster/ref/i
 | `cluster/ref/fb_fst_indiv.sh`, `cluster/ref/fb_fst_indiv.py` | Hudson FST per stand pair from reference calls, trees weighted equally (S3: de novo vs reference FST) | `figdata/fb_fst_indiv.tsv` |
 | `figures/build_supp_journal.py` | Builds S1 to S4. S2 = heterozygote deficit (A to E), S3 = de novo vs reference FST | `figures/supplementary/journal/` |
 
-**Producers (reconstructed 19 Nov 2026):** `cluster/reconstructed/allele_balance.py` writes `allele_balance.txt` (byte-identical). `het_diagnosis.json` is assembled from rerun diagnostics by `cluster/reconstructed/het_diagnosis_inputs.sbatch` and `het_diagnosis_assemble.py`, and corrected by `figures/reconstructed/het_diagnosis_update.py`. Figure S2E reads `figdata/s2e_mechanisms.tsv`, written by `cluster/reconstructed/s2e_mechanisms.sbatch` (`s2e_binomial_route.py`, `s2e_polyrad_route.R`, `s2e_assemble.py`), which also writes the binomial series of S2D (`figdata/ipyrad_binomial_F.tsv`). `figdata/polyrad_F_by_depth.csv` was written by `cluster/polyrad_F_fixed.R` (identical to `results/polyrad/polyrad_F_by_depth_fixed.csv`).
+**Producers (reconstructed 19 Nov 2026):** `cluster/reconstructed/allele_balance.py` writes `allele_balance.txt` (byte-identical). `het_diagnosis.json` is assembled from rerun diagnostics by `cluster/reconstructed/het_diagnosis_inputs.sbatch` and `het_diagnosis_assemble.py`, and corrected by `figures/reconstructed/het_diagnosis_update.py`. Figure S2E reads `figdata/s2e_mechanisms.tsv`, written by `cluster/reconstructed/s2e_mechanisms.sbatch` (`s2e_binomial_route.py`, `s2e_polyrad_route.R`, `s2e_assemble.py`), which also writes the binomial series of S2D (`figdata/ipyrad_binomial_F.tsv`). `figdata/polyrad_F_by_depth.csv` was written by `cluster/ref/polyrad_F_fixed.R` (identical to `results/polyrad/polyrad_F_by_depth_fixed.csv`).
 
 ### 3b. Mechanism tests and controls (DIAGNOSTIC)
 
 Grouped by question. All read the cr30 VCF, CATG counts or reference BAMs.
 
-- **F versus depth, with nulls:** `cluster/ref/F_vs_depth_fine.py` (fine-resolution F_IS vs depth
-  with matched HWE null), `cluster/ref/null_F_by_depth.py` (HWE null with observed depth and calling
-  rule), `cluster/simulate_HWE_F.py` with `cluster/run_sim_F.sh` and `cluster/run_sim_F2.sh`,
-  `cluster/ref/paired_depth_F.py` (same loci at shallow and deep depth), `cluster/F_diagnosis.R`
-  (reconciles the F-like quantities), `cluster/F_extrapolate.R` (F remaining at high library
-  quality), `cluster/F_by_depth.sh`, `cluster/F_rand_control.sh`, `cluster/gl_highdepth.py`,
-  `cluster/catg_to_beagle_mindp.py`, `cluster/catg_to_beagle_rand.py` (depth-floor and
-  random-thinning controls for ngsRelate F).
-- **Rarefaction:** `cluster/ref/rarefy_and_cv.py` (subsample reads to a fixed ceiling, then
-  stratify F by original depth).
-- **Allele balance:** `cluster/ref/balance_from_pileup.py` (depth-stratified balance from
-  mpileup), `cluster/ref/balance_denovo.py` with `cluster/ref/run_denovo.sh` (de novo control),
-  `cluster/ref/simulate_reads.py` with `cluster/ref/simcontrol.sh` (positive control for the
-  overdispersion statistic), `cluster/ref/two_phenomena.py` (deficit and flat balance, one
-  phenomenon or two), `cluster/shape_test.py`, `cluster/shape_test_p.py` (depth-corrected shape
-  test).
-- **Wahlund and HWE:** `cluster/ref/hwe_by_maf.py`, `cluster/ref/hwe_per_stand.py`,
-  `cluster/run_sim_wahlund.sh`, `cluster/run_sim_wahlund50.sh`.
-- **Paralogs, copy number, segmental duplications:** `cluster/ref/hdplot.py` with
-  `cluster/ref/run_hdplot.sh` (writes `figdata/hdplot.tsv`), `cluster/ref/extract_loci.sh` with
-  `cluster/ref/loci_to_fasta.py`, `cluster/ref/map_loci_to_genome.sh`,
-  `cluster/ref/F_by_copynumber.py`, `cluster/ref/selfaln_chunk.py`,
-  `cluster/ref/selfaln_index.sh`, `cluster/ref/selfaln_map.sh`, `cluster/ref/sd_label_loci.py`
-  with `cluster/ref/sd_label.sh`, `cluster/ref/F_by_sd.py` with `cluster/ref/f_sd.sh`,
-  `cluster/ref/cnv_filter.py`, `cluster/ref/locus_depth_filter.py`,
-  `cluster/ref/locus_structural_filter.R`, `cluster/ref/hobs_paralog_filter.R` with
-  `cluster/ref/run_hobs_filter.sh`, `cluster/ref/capped_depth_HF.py`,
-  `cluster/ref/cap_and_balance_filter.py`, `cluster/ref/nupt_scan.sh`.
-- **Hemizygosity and dosage:** `cluster/ref/dosage_bed.py`, `cluster/ref/dosage_cov.sh`,
-  `cluster/ref/dosage_test.py` with `cluster/ref/dosage_run.sh`, `cluster/ref/dosage_control.py`
-  with `cluster/ref/dosage_ctl.sh`.
-- **Null alleles:** `cluster/ref/null_allele_test.py`.
-- **Index hopping:** `cluster/ref/get_lanes.sh`, `cluster/ref/lane_hopping_test.py` with
-  `cluster/ref/run_hop.sh`.
-- **PCR duplicates:** `cluster/ref/clone_filter.sh`, `cluster/ref/clonemap.sh`,
-  `cluster/ref/dupe_test.sh`, `cluster/ref/downsample_control.sh`.
-- **Genotype calling rules:** `cluster/ref/recall_threshold.py`, `cluster/ref/betabinom_recall.py`,
-  `cluster/ref/maf_from_reads.py`.
-- **Organellar haplotypes:** `cluster/ref/cp_haplotypes.sh`.
-- **polyRAD install:** `cluster/ref/install_polyrad.sh`.
-- **Earlier heterozygote-deficit diagnosis:** `cluster/diagnose_het_deficit.py`.
-
-Local diagnostic figure builders (presentation figures, not in the journal set; write to the
-repository root): `figures/build_F_depth.py` (`figdata/F_vs_depth.tsv`),
-`figures/build_hdplot.py` (`figdata/hdplot.tsv`), `figures/build_hobs_filter_F.py`
-(`figdata/hobs_filter_F.tsv`), `figures/build_locus_filter_F.py` (`figdata/locus_filter_F.tsv`),
-`figures/build_polyrad_F.py`, `figures/build_pipeline_compare.py` (three pipelines, same F vs depth
-curve). Producers of `F_vs_depth.tsv`, `hobs_filter_F.tsv` and `locus_filter_F.tsv` are not
-identified.
+The individual mechanism tests summarized in Supplementary Note 1 (null models of F versus depth, dosage, copy number, segmental duplication, lane hopping and others) are development diagnostics and are not distributed; the six whose outputs feed `figdata/het_diagnosis.json` are rerun by `cluster/reconstructed/het_diagnosis_inputs.sbatch`.
 
 ---
 
@@ -190,33 +122,11 @@ identified.
 | 13 | `cluster/abc/f3_targeted.py` | f3 restricted to the 270 triples that can detect cross-gap admixture, 50-block jackknife | | FINAL |
 | 14 | `figures/build_F2_journal.py` | Builds Figure 2 (PCA, eigenvalues, Hudson FST on distance, sNMF K = 2) | `figures/journal/F2_host_structure.{pdf,png}` | FINAL |
 
-Reference-genome controls on structure (FINAL, cited in the log as replicating structure):
-`cluster/ref/fb_fst_pairs.py` with `cluster/ref/fb_fst.sh` (`figdata/fb_fst_pairs.tsv`),
-`cluster/ref/fb_fst_indiv.py` (unit 3), `cluster/ref/fst_by_copynumber.py` (FST on single-copy vs
-multi-copy loci).
+Reference-genome control on individual-level structure: `cluster/ref/fb_fst_indiv.py` with `cluster/ref/fb_fst_indiv.sh` (`figdata/fb_fst_indiv.tsv`, Figure S3).
 
 **Producer (reconstructed 19 Nov 2026):** `cluster/reconstructed/host_fst_pairs.py` writes `figdata/host_fst_pairs.tsv` and `stand_fst_matrix.tsv` (both byte-identical) with the project's Hudson estimator (`hudson_fst` in `cluster/abc/sumstats.py`; ratio of averages, at least 6 called chromosomes per stand) and haversine distances between stand centroids.
 
-**Sensitivity (FINAL, dp20 set):** `cluster/dp20/mask_depth.py` (genotypes with DP < 20 set to
-missing), `cluster/dp20/run_dp20.sh`, then path-edited reruns `cluster/dp20/q1_popgen.py`,
-`cluster/dp20/q1_amova.R`, `cluster/dp20/q2_sgs.R`, `cluster/dp20/q4_ibd_residual.R`.
-
 **SUPERSEDED or EXPLORATORY:**
-
-- `cluster/run_q1.sh`: first Q1 run, replaced by `q1_fixed.sh` (negative FST mean).
-- `cluster/f3_admixture.py`: f3 without bias correction, replaced by `f3_corrected.py`.
-- `cluster/isolation_by_distance.py`: early check that the stand effect is real structure.
-- `cluster/pop_structure_prelim.py`, `cluster/pop_structure_full.py`: early checks that stand-level
-  structure survives unreliable genotypes.
-- `cluster/pub85_faithful.py`, `cluster/pub85_replicate.sh`: replication of the Varas-Myrik et al.
-  (2022) filter chain.
-- `cluster/run_feems.py`, `cluster/run_feems2.py`, `cluster/make_tri_grid.py`: feems, judged not
-  applicable (disjoint ranges).
-- `cluster/vcf_to_treemix.py`, `cluster/run_treemix.sh`, `cluster/treemix_summary.R`: TreeMix.
-- Presentation network panels: `figures/build_neighbornet.R` (`figdata/stand_fst_matrix.tsv` to
-  `figdata/nnet_*.tsv`), `figures/build_networks.py` (NeighborNet of stands plus MSN of
-  individuals). `cluster/ref/indiv_distance.py` with `cluster/ref/run_indiv_dist.sh` writes
-  `figdata/indiv_dist.tsv`. The producer of `stand_fst_matrix.tsv` is not identified.
 
 ---
 
@@ -256,46 +166,12 @@ computes that quantity, but no file records the link.
 
 **Tables S3 and S4** are written by the supplementary-document builder, which is not distributed here because it holds manuscript text. Table S3 lists the priors coded in `cluster/abc/sim9.py`; Table S4 reads `figdata/abcrf_results.json` (written by `abcrf/abcrf_analysis.R`).
 
-### 6b. SUPERSEDED: scikit-learn ABC-RF analyses (replaced by abcrf, 18 Nov 2026)
-
-`cluster/abc/train.py`, `cluster/abc/final_abc.py` (with `rerun_final.sh`),
-`cluster/abc/controls.py` (with `rerun_controls.sh`), `cluster/abc/power.py`,
-`cluster/abc/contrasts.py`, `cluster/abc/contrasts4.py`, `cluster/abc/confound6.py`,
-`cluster/abc/f4_numbers.py` (with `f4_num.sh`), `cluster/abc/f4_numbers6.py` (with
-`f4_num6.sbatch`), `cluster/abc/f4_numbers7.py` (with `f4_num7.sbatch`), the analysis sections of
-`f4_numbers8.py` and `f4_numbers9.py` (with `f4_num8.sbatch`, `f4_num9.sbatch`),
-`cluster/abc/f4_fig9.py` (with `fig9.sbatch`), `cluster/abc/f4_conv9.py` (with `conv9.sbatch`),
-`cluster/abc/f4_contact9.py` (with `con9.sbatch`), `cluster/abc/f4_lgm8.py` (with
-`f4_lgm8.sbatch`), `cluster/abc/f4_decomp8.py` (with `f4_decomp8.sbatch`).
-
-### 6c. SUPERSEDED: simulator development history
-
-- Simulators: `cluster/abc/simulate.py` (first three-hypothesis model), `cluster/abc/lattice.py`
-  and `cluster/abc/sim2.py` (2D lattice, no IBD), `cluster/abc/sim4.py`, `cluster/abc/sim5.py`
-  (still imported by sim9), `cluster/abc/sim6.py` (T1 floor 100 generations),
-  `cluster/abc/sim7.py` (floor 10), `cluster/abc/sim8_unlinked.py`.
-- Production wrappers: `cluster/abc/run_sims.py`, `run_sims5.py`, `run_sims6.py`, `run_sims7.py`,
-  `prod.sbatch`, `prod5.sbatch`, `prod6.sbatch`, `prod7.sbatch`, `prodh1.sbatch`,
-  `prodh1b.sbatch`.
-- Earlier statistics and observed vectors: `cluster/abc/sumstats.py`, `cluster/abc/observed.py`,
-  `cluster/abc/load_observed.py`.
-- Feasibility and diagnosis runs: `cluster/abc/feas.py`, `feas2.py`, `feas3.py`, `feas4.py`,
-  `feas8.py`, `diag.py`, `diag2.py`, `diag3.py`, `diag4.py`, `rectest.py` (linkage as the source of
-  FST scatter), `bench8.py` (timing and noise of clock statistics), each with its `.sbatch`.
-- `cluster/abc/ancestry_check.py`: whether a no-gene-flow model reproduces the K = 2 barplot
-  (sklearn-era control).
-- MIGRATE-N, excluded from the manuscript: `cluster/make_migrate_infile.py`,
-  `cluster/run_migrate_long.sbatch`.
-
----
-
 ## 7. Fungal endophyte community from ITS1 (Figure 5, Figure S4)
 
 | order | script | purpose | output | status |
 |---|---|---|---|---|
 | 1 | `cluster/run_dada2.sh` with `cluster/dada2_step1.R` | DADA2 ASV inference per amplicon (16S and ITS, separate parameters) | `microbiome/ITS/seqtab_nochim.rds`, `taxonomy.rds` | FINAL (this is the table `fungal_fig.R` reads) |
 | 2 | `cluster/run_its_r1.sh` with `cluster/dada2_its_r1.R` | ITS forward-reads-only run, declared the production run on 4 Aug 2026 | `seqtab_nochim_r1.rds`, `taxonomy_r1.rds` | see note |
-| 3 | `cluster/decontam_16S.R` | Removes host chloroplast and mitochondrial ASVs from 16S | | SUPERSEDED for the paper (16S dropped) |
 | 4 | `cluster/final_protocol.R` | Final endophyte protocol: MRA 2020 settings plus organelle removal, sample floor, prevalence and abundance filter | `results/Q5/final_protocol.txt` | FINAL (protocol) |
 | 5 | `cluster/fungal_fig.R` with `cluster/fungal_fig.sh` | F5 statistics at tree level: dbRDA on Bray-Curtis, PERMANOVA, PERMDISP, order composition, Shannon, host-genetic test on SNP PCs (genio `read_plink`) | `figdata/fungfig_r1/panel*.csv` (paper; `figdata/fungfig/` = merged table), `fungal_fig.txt` | FINAL |
 | 6 | `cluster/disp_dir.R` | PERMDISP direction at tree level (which group is less dispersed) | stdout | FINAL (dispersion caveat) |
@@ -312,76 +188,7 @@ computes that quantity, but no file records the link.
 
 **EXPLORATORY or SUPERSEDED (microbiome):**
 
-- ITS processing choices: `cluster/its_filter_diag.R`, `cluster/its_maxee_test.R`,
-  `cluster/its_r1_vs_merged.R`, `cluster/its_r1_taxcomm.R` with `cluster/its_r1_taxcomm.sh`,
-  `cluster/export_asvs.R`.
-- 16S (dropped from the paper): `cluster/phylo_16S.sh`, `cluster/phylo_16S_gg2.sh`,
-  `cluster/compare_three_trees.R`, `cluster/prune_and_compare_trees.R`,
-  `cluster/threshold_table.R`, `cluster/depth_distribution.R`, `cluster/organelle_haplotypes.R`,
-  `cluster/q6_organelle_control.R`, `cluster/q6_organelle_control2.R`.
-- Above-ground pooling and filter settings: `cluster/aboveground_pool.R`,
-  `cluster/ag_250_filtered.R`, `cluster/ag_250_nofilter.R`, `cluster/q6_filter_gradient.R`,
-  `cluster/q6_gradient_full.R`.
-- Q5 community partition (earlier framing): `cluster/q5_community.R` with `cluster/run_q5.sh`,
-  `cluster/q5_rerun_clean.R`, `cluster/q9_microbiome_ibd.R` with `cluster/run_ibd.sh`.
-- Q6 kinship-based host-genetic tests, replaced by the SNP-PC test in `fungal_fig.R` panel D:
-  `cluster/q6_extended_phenotype.R`, `cluster/q6_rerun_clean.R`, `cluster/q6_varpart.R`,
-  `cluster/q6_aboveground_varpart.R`, `cluster/q6_ksens_mrm.R` with `cluster/run_ksens.sh`,
-  `cluster/q6_power.R` with `cluster/run_power.sh`, `cluster/q6_heritability.R` with
-  `cluster/run_herit.sh`, `cluster/q6_family_level.R` with `.sh`, `cluster/q6_family2.R` with
-  `.sh`, `cluster/q6_null_values.R` with `.sh`, `cluster/q6_core_sweep.R`, and the dp20 and
-  no-floor variants `cluster/dp20/q6_ksens_mrm.R`, `cluster/dp20/q6_power.R`,
-  `cluster/dp20/q6_rerun_clean.R`, `cluster/dp20/run_q6_dp20.sh`, `cluster/nofloor/q6_baseline.R`,
-  `cluster/nofloor/q6_dp20.R`.
-- Cordillera tests with environmental covariates: `cluster/q6_paired_cordillera.R`,
-  `cluster/q6_paired_cordillera_lit.R` with `cluster/q6_lit.sh`,
-  `cluster/q6_paired_cordillera_soil.R` with `cluster/q6_soil.sh`,
-  `cluster/q6_paired_cordillera_pc.R` with `cluster/q6_pc.sh`.
-- Old Figure 1C (removed panel): `cluster/f1c_family.R`, `cluster/f1c_robust.R`,
-  `cluster/f1c_varpart.R`, each with its `.sh`.
-- Functional lifestyle (curiosity test, not in the paper): `cluster/ft_probe.R`,
-  `cluster/q6_lifestyle.R` with `cluster/q6_lifestyle.sh` (`figdata/q6_lifestyle.txt`,
-  `null_strict.tsv`, `null_propagated.tsv`).
-- Q7 and Q8 (folded in or withdrawn): `cluster/q7_q8.R` with `cluster/run_q7q8.sh`.
-- Model-based GLM (retracted for non-convergence): `cluster/manyglm_q5q6.R`,
-  `cluster/manyglm_decomp.R`, `cluster/run_mglm.sh`.
-- Compartment identity of a disputed 2018 sample: `cluster/compartment_test.sh`.
-
 ---
 
-## Other scripts
 
-### Exploratory diagnostics: replicate pairs and genotyping error (pre-ipyrad-final phase)
-
-The 15 "replicate pairs" were later shown to be related trees, not replicates. Scripts built on
-the replicate criterion are SUPERSEDED.
-
-`cluster/validate_replicate_criterion.py`, `cluster/are_pairs_identical.py`,
-`cluster/write_validated_pairs.py`, `cluster/find_best_matches.py`,
-`cluster/profile_anomalous_libs.py`, `cluster/depth_confound_test.py`,
-`cluster/depth_vs_stand.py`, `cluster/diagnose_p1_failure.py`,
-`cluster/test_dropout_hypothesis.py`, `cluster/test_locus_concentration.py`,
-`cluster/dropout_vs_nonhomology_cr30.py`, `cluster/verify_calling_mechanism.py`,
-`cluster/crossval_locus_filter.py`, `cluster/clean_loci.py`, `cluster/excess_het_filter.py`,
-`cluster/simulate_relatedness.py`, `cluster/calibrate_error_model.py`.
-
-### Analyses outside the seven units
-
-- Fine-scale spatial genetic structure (Q2) and dispersal agents (Q3): `cluster/q2_sgs.R`,
-  `cluster/check_depth_distance.R` (does depth track within-stand distance),
-  `cluster/q3_dispersal.R`.
-
-### Housekeeping
-
-`cluster/status.sh` (queue and result status), `cluster/overnight_summary.sh` (collects overnight
-outputs).
-
-### Unclassified
-
-- `cluster/abc/variant_counts.py`: counts of range-private vs shared variants for "main Figure 3B".
-  The current Figure 3 is QST-FST, so this refers to an older figure numbering. The output is
-  probably `figdata/variant_counts.txt`, which is not traced in the log.
-- `cluster/run_pop_test.sh`, `cluster/run_f_test.sh`: headers give only environment setup and a
-  VCF path.
-- `cluster/ref/dl_kraken.sh`: downloads a Kraken2 database; the header states no purpose.
-- `cluster/ref/.jobids`: list of Slurm job IDs, not a script.
+**Input metadata (not derived):** `figdata/popmap_177.tsv` (library to stand map) and `metadata/` (SRA run manifests). `figdata/stand_coords.npz` is rebuilt by `figures/reconstructed/stand_coords.py` from `metadata/sra_runs_radseq.csv` and `figdata/keep163.txt`.
