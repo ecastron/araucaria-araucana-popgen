@@ -72,4 +72,4 @@ parts are bespoke and are described in the Methods:
 ## License and citation
 
 Code is released under the MIT license (`LICENSE`); derived data under CC BY 4.0. Citation
-metadata are in `CITATION.cff`. Archived versions carry a Zenodo DOI.
+metadata are in `CITATION.cff`. Archived versions carry a Zenodo DOI; cite all versions with the concept DOI [10.5281/zenodo.24357836](https://doi.org/10.5281/zenodo.24357836).
