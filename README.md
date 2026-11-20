@@ -17,7 +17,7 @@ Raw reads are in the NCBI Sequence Read Archive:
 | RAD-seq (host genotypes) | PRJNA634877 | 188 runs, 173 trees |
 | ITS1 and 16S amplicons (endophytes) | PRJNA517193 | January 2018 campaign |
 
-Run-level metadata, including stand coordinates, are in `metadata/sra_runs_radseq.csv` and
+Run-level metadata, including stand coordinates and collection dates, are in `metadata/sra_runs_radseq.csv` and
 `metadata/sra_runs_amplicon.csv`. The reference genome is AraucariaDB v1. Climate is CHELSA v2.1,
 soil is SoilGrids 2.0, and the forest distribution is the CONAF forest cadastre (Catastro);
 `environment/` holds the extraction scripts and the extracted values.

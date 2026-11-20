@@ -193,4 +193,4 @@ computes that quantity, but no file records the link.
 ---
 
 
-**Input metadata (not derived):** `figdata/popmap_177.tsv` (library to stand map) and `metadata/` (SRA run manifests). `figdata/stand_coords.npz` is rebuilt by `figures/reconstructed/stand_coords.py` from `metadata/sra_runs_radseq.csv` and `figdata/keep163.txt`.
+**Input metadata (not derived):** `figdata/popmap_177.tsv` (library to stand map) and `metadata/` (SRA run manifests; the `collection_date` column is added by `metadata/add_collection_dates.py` from the BioSample records). `figdata/stand_coords.npz` is rebuilt by `figures/reconstructed/stand_coords.py` from `metadata/sra_runs_radseq.csv` and `figdata/keep163.txt`.
