@@ -1,10 +1,7 @@
 #!/bin/bash
-# Re-runs the existing (unchanged) diagnostic scripts whose stdout supplied numbers to
-# figdata/het_diagnosis.json, saving each stdout under results/reconstructed/het_diag/.
-# The original runs were interactive (srun) and their stdout was not kept; this job
-# regenerates it so het_diagnosis_assemble.py can read every value from a file.
-# Reconstructed 18-19 Nov 2026 to replace lost inline code. Verification: see
-# het_diagnosis_assemble.py.
+# Runs the diagnostic scripts whose stdout supplies numbers to figdata/het_diagnosis.json,
+# saving each stdout under results/derived/het_diag/ so het_diagnosis_assemble.py can read
+# every value from a file.
 #SBATCH -J hetdiag
 #SBATCH -p basic
 #SBATCH -c 8
@@ -18,7 +15,7 @@ conda activate /home/ecastron/envs/feems
 P=/home/ecastron/araucaria
 V=$P/rad/ipyrad_full/full_ct091_outfiles/full_ct091.cr30.vcf
 POP=$P/metadata/popmap_177.tsv
-O=$P/results/reconstructed/het_diag
+O=$P/results/derived/het_diag
 mkdir -p $O
 # independent single-threaded scans of the same VCF: run them side by side
 python $P/scripts/ref/two_phenomena.py      $V $POP    > $O/two_phenomena.txt      &

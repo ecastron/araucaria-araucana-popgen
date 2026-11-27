@@ -19,7 +19,7 @@ from rasterio.windows import from_bounds
 BASE = ("https://os.zhdk.cloud.switch.ch/chelsav2/GLOBAL/climatologies/"
         "1981-2010/bio/CHELSA_bio{n}_1981-2010_V.2.1.tif")
 # The FINAL variable set is bio5 (summer heat), bio18 (growing-season water) and
-# bio6 (winter cold) — bio4, bio7 and bio12 were dropped as redundant (|r| = 0.80,
+# bio6 (winter cold); bio4, bio7 and bio12 were dropped as redundant (|r| = 0.80,
 # 0.80 and 0.96 with bio6/bio18). Temperature variables are K*10, so offset -273.15.
 SCALE = {5: (0.1, -273.15), 6: (0.1, -273.15), 18: (0.1, 0.0)}
 W, E, S, N = -74.4, -70.6, -40.1, -36.9

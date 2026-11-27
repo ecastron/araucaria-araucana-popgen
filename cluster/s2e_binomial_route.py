@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Figure S2E on ONE genotype route: every filter and its unfiltered baseline on the same SNPs and bins.
 
-PRODUCES  results/reconstructed/s2e/binomial_route.tsv   one row per intervention (spread + per-bin F, n)
+PRODUCES  results/derived/s2e/binomial_route.tsv   one row per intervention (spread + per-bin F, n)
           stdout: the same table, human readable
 
 ROUTE     "binomial all-SNP route": the ipyrad cr30 VCF, every biallelic SNP; each genotype re-called
@@ -23,7 +23,6 @@ ROWS      every S2E intervention that can be expressed on this route, each again
           and the FreeBayes pipeline are route changes, not filters, and cannot be done here.
 
 USAGE     s2e_binomial_route.py <cr30.vcf> <popmap_177.tsv> <loci_copies.tsv> <loci_sd.tsv> <out.tsv>
-Written 19 Nov 2026 (S2E repair).
 """
 import sys, math, random, collections, statistics as stt
 

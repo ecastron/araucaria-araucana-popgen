@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 """Pairwise Hudson F_ST between the 12 stands (66 pairs), with great-circle distances.
 
-PRODUCES  results/reconstructed/host_fst_pairs.tsv
+PRODUCES  results/derived/host_fst_pairs.tsv
           columns: stand_a stand_b km fst between nloci
-          (the original is results/figdata/host_fst_pairs.tsv, copied to figdata/host_fst_pairs.tsv;
+          (copied to figdata/host_fst_pairs.tsv;
           read by figures/build_F2_journal.py, figures/qst_fst.py, figures/build_supp_journal.py,
           and referred to by scripts/abc/mc1_fst_ci.py and scripts/ref/fb_fst_pairs.py)
-          and results/reconstructed/stand_fst_matrix.tsv (12 x 12 symmetric matrix of the same
+          and results/derived/stand_fst_matrix.tsv (12 x 12 symmetric matrix of the same
           F_ST values, diagonal 0, read by figures/build_neighbornet.R)
 
 INPUTS    rad/ipyrad_full/full_ct091_outfiles/full_ct091.cr30.vcf   (via scripts/abc/load_observed.py)
@@ -23,15 +23,7 @@ METHOD    Genotype dosages from GT (biallelic SNPs only, 163 trees, 78,026 SNPs)
           is project code, not a published package; Hudson's estimator is implemented directly
           (no scikit-allel call).
 
-PROVENANCE  Reconstructed 18-19 Nov 2026 to replace lost inline code (the session that wrote the
-          original on 26 Aug 2026 has no surviving transcript). The method was inferred from
-          scripts/abc/mc1_fst_ci.py, whose 'full' estimate and column layout are the same.
-
-VERIFICATION  (run 18 Nov 2026 on McCartney, srun -p basic)
-          host_fst_pairs.tsv  : BYTE-IDENTICAL to results/figdata/host_fst_pairs.tsv
-                                (cmp; md5 d3b4d3841da5f1bba464cbcefce68d8b, same as the local figdata copy)
-          stand_fst_matrix.tsv: BYTE-IDENTICAL to the local figdata/stand_fst_matrix.tsv (cmp)
-          Printed: 163 trees x 78,026 SNPs; IBD r = 0.647; within-range n = 39, 0.079-0.130;
+PRINTS    163 trees x 78,026 SNPs; IBD r = 0.647; within-range n = 39, 0.079-0.130;
           between-range n = 27, 0.136-0.206 (all as quoted in the Results).
 """
 import sys, itertools as it, numpy as np
@@ -40,7 +32,7 @@ from load_observed import load            # parses the cr30 VCF restricted to ke
 from sumstats import freqs_by_deme, hudson_fst
 from chain import _km
 
-OUTDIR = "/home/ecastron/araucaria/results/reconstructed"
+OUTDIR = "/home/ecastron/araucaria/results/derived"
 MINCHR = 6        # called chromosomes required in each stand of a pair
 
 G, DEME, COORDS, COASTAL, stands = load()

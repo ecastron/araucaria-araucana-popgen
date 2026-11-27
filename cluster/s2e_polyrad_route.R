@@ -2,10 +2,10 @@
 # Figure S2E, polyRAD route: every polyRAD-route row and its own unfiltered baseline, same loci
 # universe (34,674 polyRAD loci), same 7 depth bins, same F estimator.
 #
-# PRODUCES  results/reconstructed/s2e/polyrad_route.tsv     one row per intervention
-#           results/reconstructed/s2e/locus_filter_F.tsv    reconstruction of figdata/locus_filter_F.tsv
-#           results/reconstructed/s2e/ipyrad_binomial_F.tsv reconstruction of the "ipyrad binomial"
-#                                                           series hard-coded in figures/build_polyrad_F.py
+# PRODUCES  results/derived/s2e/polyrad_route.tsv     one row per intervention
+#           results/derived/s2e/locus_filter_F.tsv    figdata/locus_filter_F.tsv
+#           results/derived/s2e/ipyrad_binomial_F.tsv the "ipyrad binomial" series used in
+#                                                     figures/build_polyrad_F.py
 #           stdout: all of the above, human readable
 #
 # ESTIMATORS  Two within-stand F estimators exist in the 2026 scripts on this object:
@@ -21,11 +21,11 @@
 #   SAME loci and read counts, the binomial call rule of scripts/ref/*.py (het if L(0.5) >
 #   L(err 0.001)), to reproduce the ipyrad-binomial series and give the polyRAD model row its
 #   own baseline.
-# Written 19 Nov 2026 (S2E repair). Inputs: results/polyrad/rad_genotyped.rds, metadata/popmap_177.tsv
+# Inputs: results/polyrad/rad_genotyped.rds, metadata/popmap_177.tsv
 .libPaths(c("/home/ecastron/R/libs", .libPaths()))
 suppressPackageStartupMessages(library(polyRAD))
 P   <- "/home/ecastron/araucaria"
-O   <- file.path(P, "results/reconstructed/s2e"); dir.create(O, showWarnings = FALSE, recursive = TRUE)
+O   <- file.path(P, "results/derived/s2e"); dir.create(O, showWarnings = FALSE, recursive = TRUE)
 r   <- readRDS(file.path(P, "results/polyrad/rad_genotyped.rds"))
 
 G   <- GetProbableGenotypes(r, omit1allelePerLocus = TRUE)$genotypes          # taxa x alleles
@@ -78,7 +78,7 @@ lmean <- rowMeans(pres, na.rm = TRUE); lcv <- apply(pres, 1, sd, na.rm = TRUE) /
 lmiss <- rowSums(ld == 0, na.rm = TRUE) / ncol(ld)
 loc_idx <- seq_len(nrow(ld))      # locDepth column order = locus index used in alleles2loc
 
-# ---- 1. reconstruction of figdata/locus_filter_F.tsv -------------------------------------------
+# ---- 1. figdata/locus_filter_F.tsv -------------------------------------------
 SF <- list(c(Inf, Inf, Inf), c(0.80, 95, 0.70), c(0.80, 64, 0.65), c(0.60, 64, 0.65), c(0.55, 43, 0.60))
 lf <- NULL
 for (t in SF) {
@@ -90,7 +90,7 @@ for (t in SF) {
               t(setNames(z$n, paste0("n_", NM))), check.names = FALSE))
 }
 write.table(lf, file.path(O, "locus_filter_F.tsv"), sep = "\t", quote = FALSE, row.names = FALSE)
-cat("\n== locus_filter_F reconstruction (valid estimator, bins > 2000 genotypes) ==\n"); print(lf, row.names = FALSE)
+cat("\n== locus_filter_F (valid estimator, bins > 2000 genotypes) ==\n"); print(lf, row.names = FALSE)
 
 # ---- 2. ipyrad-binomial series on the polyRAD loci ------------------------------------------------
 zb_valid <- Fdepth(Bn, all_loci, "valid"); zb_fixed <- Fdepth(Bn, all_loci, "fixed")

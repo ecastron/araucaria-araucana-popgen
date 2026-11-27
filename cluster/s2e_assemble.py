@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Assemble the corrected Figure S2E table: every intervention with its own same-route baseline.
 
-PRODUCES  results/reconstructed/s2e_mechanisms.tsv   (copied to figdata/s2e_mechanisms.tsv)
+PRODUCES  results/derived/s2e_mechanisms.tsv   (copied to figdata/s2e_mechanisms.tsv)
 
-INPUTS    results/reconstructed/s2e/binomial_route.tsv   s2e_binomial_route.py (ipyrad cr30 VCF, binomial)
-          results/reconstructed/s2e/polyrad_route.tsv    s2e_polyrad_route.R  (34,674 polyRAD loci)
+INPUTS    results/derived/s2e/binomial_route.tsv   s2e_binomial_route.py (ipyrad cr30 VCF, binomial)
+          results/derived/s2e/polyrad_route.tsv    s2e_polyrad_route.R  (34,674 polyRAD loci)
           results/polyrad_fb/fb_F_by_depth.csv           fb_F_by_depth.R (FreeBayes + polyRAD, reference)
 
 DESIGN    Primary bin set for every row: the 7 genotype-depth bins 6-10 ... 100+.
@@ -17,13 +17,12 @@ DESIGN    Primary bin set for every row: the 7 genotype-depth bins 6-10 ... 100+
           Pipeline row: FreeBayes + polyRAD on the reference is a replication with a different locus
             universe; its comparator is the de novo polyRAD route on the same estimator.
           route_baseline_universe says what the baseline is for each row.
-Written 19 Nov 2026 (S2E repair).
 """
 import csv
 
 P = "/home/ecastron/araucaria"
-S = f"{P}/results/reconstructed/s2e"
-OUT = f"{P}/results/reconstructed/s2e_mechanisms.tsv"
+S = f"{P}/results/derived/s2e"
+OUT = f"{P}/results/derived/s2e_mechanisms.tsv"
 NM = ['6-10', '10-15', '15-20', '20-30', '30-50', '50-100', '100+']
 rd = lambda p: list(csv.DictReader(open(p), delimiter="\t"))
 bn = {r["mechanism"]: r for r in rd(f"{S}/binomial_route.tsv")}

@@ -1,8 +1,7 @@
 #!/bin/bash
-# Figure S2E repair (19 Nov 2026): compute every S2E row against a baseline from the same genotype
-# route, and regenerate the three S2-related values that had no surviving producer:
-#   figdata/locus_filter_F.tsv, the ipyrad binomial series, the copy-class spreads.
-# Steps run side by side; s2e_assemble.py then writes results/reconstructed/s2e_mechanisms.tsv.
+# Figure S2E: compute every S2E row against a baseline from the same genotype route, and the
+# S2-related values figdata/locus_filter_F.tsv, the ipyrad binomial series and the copy-class spreads.
+# Steps run side by side; s2e_assemble.py then writes results/derived/s2e_mechanisms.tsv.
 #SBATCH -J s2e
 #SBATCH -p basic
 #SBATCH -c 4
@@ -15,11 +14,11 @@ P=/home/ecastron/araucaria
 S=$P/scripts
 V=$P/rad/ipyrad_full/full_ct091_outfiles/full_ct091.cr30.vcf
 POP=$P/metadata/popmap_177.tsv
-O=$P/results/reconstructed/s2e
+O=$P/results/derived/s2e
 mkdir -p $O
 source /opt/miniconda/miniconda-py312_24.3.0-0/etc/profile.d/conda.sh
 conda activate /home/ecastron/envs/feems
-# copy-class spreads: the original script, unchanged, stdout kept this time
+# copy-class spreads
 python $P/scripts/ref/F_by_copynumber.py $V $POP $P/results/sv/loci_copies.tsv > $O/F_by_copynumber.txt &
 python $S/s2e_binomial_route.py $V $POP $P/results/sv/loci_copies.tsv $P/results/sv/loci_sd.tsv \
        $O/binomial_route.tsv > $O/binomial_route.txt &

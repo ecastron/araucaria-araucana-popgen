@@ -7,7 +7,7 @@ signature, so an SFS-based ABC would select that model for technical reasons.
 
 FST is Hudson's estimator (allele frequencies only, no genotype configurations).
 Statistics are ratios / correlations / dimensionless counts, so a multiplicative distortion of the
-FST scale — which the dp20 comparison showed is real (~3x) — cancels.
+FST scale (which the dp20 comparison showed is real, ~3x) cancels.
 """
 import numpy as np, itertools, warnings
 warnings.filterwarnings('ignore', r'Mean of empty slice')

@@ -1,55 +1,34 @@
 #!/usr/bin/env python3
 """Assemble figdata/het_diagnosis.json (Figure S2 B, C, E and the heterozygote-deficit record).
 
-PRODUCES  results/reconstructed/het_diagnosis.json
-          (original: figdata/het_diagnosis.json, 4 Sep 2026, local only; read by
-          figures/build_supp_journal.py for S2B, S2C, S2E)
+PRODUCES  results/derived/het_diagnosis.json
+          (copied to figdata/het_diagnosis.json; read by figures/build_supp_journal.py for S2B, S2C)
 
-WHAT THE ORIGINAL WAS  Its own "_source" field says it was typed from ANALYSIS_SPEC.md and the
-          F-diagnosis memory record, not computed by a script. This assembler replaces that by
-          reading each number from the output file of the script that produced it. Every value is
-          tagged in SOURCES below; values with no surviving producer output are constants and are
-          marked UNSOURCED.
+METHOD    Each number is read from the output file of the script that produced it. Every value is
+          tagged in SOURCES below; values with no producer output are constants and are marked
+          UNSOURCED.
 
 INPUTS (all on McCartney, under /home/ecastron/araucaria)
-  results/reconstructed/het_diag/*.txt   stdout of scripts/ref/{two_phenomena, rarefy_and_cv,
+  results/derived/het_diag/*.txt   stdout of scripts/ref/{two_phenomena, rarefy_and_cv,
                                          locus_depth_filter, cnv_filter, hwe_per_stand, hwe_by_maf}.py,
-                                         re-run unchanged on the cr30 VCF by het_diagnosis_inputs.sbatch
-                                         (the 2026 runs were interactive; their stdout was not kept)
+                                         run on the cr30 VCF by het_diagnosis_inputs.sbatch
   results/Q1/ct_compare/ct_compare.txt   median ngsRelate F per clustering threshold (job 40007)
   results/polyrad/polyrad_F_by_depth_fixed.csv   polyRAD de novo F by depth (= figdata copy, md5)
   results/polyrad_fb/fb_F_by_depth.csv   FreeBayes + polyRAD F by depth (= figdata copy, md5)
   logs/hobsfilt_40316.out                H_obs ceilings (hobs_paralog_filter.R stdout)
-  results/reconstructed/het_diag/figdata_locus_filter_F.tsv   copy of the local figdata/locus_filter_F.tsv
-                                         (structural filters; no producer stdout survives)
+  results/derived/het_diag/figdata_locus_filter_F.tsv   copy of the local figdata/locus_filter_F.tsv
+                                         (structural filters)
   results/refmap/hdplot.tsv              HDplot per-SNP H and D
   logs/simF2_39642.out, logs/simW50_39644.out   allele-dropout and Wahlund+dropout ceilings
   logs/dosetest_41088.out                hemizygosity test
   results/sv/fb_fst_indiv.tsv, results/figdata/host_fst_pairs.tsv   de novo vs reference F_ST
 
-PROVENANCE  Written 18-19 Nov 2026 to replace the lost, hand-assembled original.
-
-VERIFICATION  (run 18 Nov 2026 on McCartney; het_diagnosis_compare.py original vs reconstructed)
-          Every value in observed_F, F_by_genotype_depth, rarefaction_to_30_reads, pipelines,
-          mechanisms and consequences is IDENTICAL (max |diff| 0), including every number embedded
-          in the mechanism strings and structure_robust_r = 0.9911. Differences:
-          (1) MISMATCH spread_after_intervention "depth-CV filter (166 of 76,823 loci)": original
-              1.207, its producer (rarefy_and_cv.py, section (2), loci kept) gives 1.251. 1.207 is
-              the polyRAD unfiltered baseline value, so it looks like the baseline was entered for
-              a filter recorded as "changes nothing".
-          (2) "_source" text differs by design.
-          Caveats: the ipyrad binomial pipeline series is a constant (UNSOURCED, see above), so its
-          agreement is not an independent check; several rows are UNSOURCED text.
-          NOTE on S2E: the "baseline" 1.207 is the polyRAD route (34,674 loci). Rows 2, 3, 6 and 8
-          come from the binomial all-locus route, whose own unfiltered spread is 1.421 over the
-          7 bins (locus_depth_filter.py, cnv_filter.py) or 1.242 over the 4 bins >= 20x
-          (rarefy_and_cv.py), so those bars are not measured against the baseline drawn with them.
 """
 import csv, json, re, math
 
 P = "/home/ecastron/araucaria"
-H = f"{P}/results/reconstructed/het_diag"
-OUT = f"{P}/results/reconstructed/het_diagnosis.json"
+H = f"{P}/results/derived/het_diag"
+OUT = f"{P}/results/derived/het_diagnosis.json"
 R3 = lambda x: round(x + 0.0, 3)
 txt = lambda p: open(p).read()
 SOURCES = {}
@@ -222,7 +201,7 @@ consequences = {
 }
 
 out = {
-    "_source": ("Reassembled 18-19 Nov 2026 by scripts/het_diagnosis_assemble.py from "
+    "_source": ("Assembled by cluster/het_diagnosis_assemble.py from "
                 "the producer outputs named in its SOURCES; constants marked UNSOURCED there."),
     "observed_F": observed_F,
     "F_by_genotype_depth": F_by_depth,

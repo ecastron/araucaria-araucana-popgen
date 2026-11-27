@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Allele-balance distribution of high-depth genotypes in the de novo calls (Figure S2A).
 
-PRODUCES  results/reconstructed/allele_balance.txt
-          (original: results/Q1/recal/allele_balance.txt, 24 Aug 2026, copied to
-          figdata/allele_balance.txt on 26 Aug; parsed by figures/build_supp_journal.py for S2A)
+PRODUCES  results/derived/allele_balance.txt
+          (copied to figdata/allele_balance.txt; parsed by figures/build_supp_journal.py for S2A)
 
 INPUT     rad/ipyrad_full/full_ct091_outfiles/full_ct091.cr30.vcf   (FORMAT GT:DP:CATG, 177 libraries)
 
@@ -15,20 +14,15 @@ METHOD    For every SNP whose REF and first ALT are both in C/A/T/G and differ, 
           population SD. The overdispersion factor divides that SD by the fair-binomial SD at n = 30
           after rounding it to the 0.091 that is printed (0.1919 / 0.091 = 2.11; unrounded it would
           be 2.10). In the asymmetry line "above" includes balance exactly 0.5 (1,837 genotypes).
-          These conventions are inferred: they are the ones that reproduce the original exactly
-          (binning by division, balance / 0.05, misplaces float boundaries and does not).
+          Binning is by multiplication (balance * 20); binning by division (balance / 0.05)
+          misplaces values on float bin boundaries.
 
-PROVENANCE  Reconstructed 18-19 Nov 2026 to replace lost inline code (24 Aug 2026 session, written
-          next to plateau_diagnosis.txt and clean_loci.py output in results/Q1/recal/).
-VERIFICATION  (run 18 Nov 2026 on McCartney, srun -p basic) BYTE-IDENTICAL (cmp) to
-          results/Q1/recal/allele_balance.txt; md5 80e570d5d104004013721b29fd375240, same as the
-          local figdata/allele_balance.txt.
 """
 import numpy as np
 
 P = "/home/ecastron/araucaria"
 VCF = f"{P}/rad/ipyrad_full/full_ct091_outfiles/full_ct091.cr30.vcf"
-OUT = f"{P}/results/reconstructed/allele_balance.txt"
+OUT = f"{P}/results/derived/allele_balance.txt"
 MINDP, B = 30, "CATG"
 
 bal = []

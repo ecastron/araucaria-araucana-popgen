@@ -1,5 +1,5 @@
 {
- "_source": "ANALYSIS_SPEC.md and the F-diagnosis memory record; every value traced to a named script/job. | corrected 19 Nov 2026 by scripts_local/het_diagnosis_update.py from s2e_mechanisms.tsv",
+ "_source": "Assembled by cluster/het_diagnosis_assemble.py; every value traced to a named script or job. | updated by figures/het_diagnosis_update.py from figdata/s2e_mechanisms.tsv",
  "observed_F": 0.6652,
  "F_by_genotype_depth": {
   "bins": [

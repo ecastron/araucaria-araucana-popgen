@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""F1 — distribution, sampling, and the environmental setting.
+"""F1: distribution, sampling, and the environmental setting.
 
 JOURNAL STYLE (4 Sep 2026): no figure title, no subtitle, no on-canvas footnote and no
 interpretive phrasing. Panels carry bare letters; every word that argued a point now lives in

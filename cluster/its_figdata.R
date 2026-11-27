@@ -1,19 +1,16 @@
 #!/usr/bin/env Rscript
-# Reconstructs the ITS descriptive figure tables in figdata/:
+# Writes the ITS descriptive figure tables in figdata/:
 #   its_prevalence.csv   per-ASV prevalence (Figure S4; 2,645 ASVs, 164 samples)
 #   its_richness.csv     observed ASV richness per sample (old S7 panel C)
 #   its_composition.csv  class-level composition per stand (old S7 panel B)
 #   its_ordination.csv   CLR PCA scores per sample (old S7 panel A)
 #   its_stand_pairs.tsv  stand-centroid CLR distance vs geographic distance (36 pairs)
 #
-# Reconstructed 18-19 Nov 2026 to replace lost inline code (originals written 26 Aug 2026).
-# Outputs go to results/reconstructed/ and are compared with results/figdata/ by
-# compare_its_figdata.R; nothing in results/figdata/ is touched.
+# Outputs go to results/derived/ (OUT_DIR redirects them).
 #
 # INPUTS
 #   microbiome/ITS/seqtab_nochim.rds   DADA2 MERGED-PAIR table (dada2_step1.R, 282 x 4,061).
-#                                      NOT seqtab_nochim_r1.rds: only the merged table
-#                                      reproduces the 164 samples / 2,645 ASVs of the originals.
+#                                      (the merged table gives the 164 samples / 2,645 ASVs)
 #   microbiome/ITS/taxonomy.rds        UNITE taxonomy for that table
 #   metadata/manifest microbiome runs.csv, metadata/manifest rad runs.csv,
 #   metadata/chelsa_per_tree.tsv       (coordinates for the stand-pair table)
@@ -29,22 +26,11 @@
 # centroids, Euclidean distance; haversine km between stand-mean tree coordinates;
 # between = 1 when one stand is west of -72.5 (Coastal) and the other east of it.
 #
-# VERIFICATION (18 Nov 2026, R 4.4.0, vegan 2.6.6.1; compare_its_figdata.R, log in
-# results/reconstructed/its_compare.txt):
-#   its_prevalence.csv, its_richness.csv, its_composition.csv: byte-identical (md5).
-#   its_ordination.csv: all labels identical; PC1, PC2 max |diff| 1.1e-13 (last printed
-#     digit only, floating-point summation order). PC1 10.14%, PC2 6.41% (old S7 axis labels
-#     10.1%, 6.4%).
-#   its_stand_pairs.tsv: labels and `between` identical; km max |diff| 1.0e-12, dissim max
-#     |diff| 1.0e-13. r(ln km, dissim) = +0.138 (the log's +0.136 is the q9 run with the
-#     extra abundance filter, not this file).
-#
-# ITS TABLE SELECTION (added 19 Nov 2026). "merged" (default) reproduces everything above
-# unchanged. "r1" reads the forward-read table (dada2_its_r1.R), the pipeline chosen on
+# ITS TABLE SELECTION. "merged" (default) gives everything above. "r1" reads the forward-read table (dada2_its_r1.R), the pipeline chosen on
 # 4 Aug 2026 (ANALYSIS_SPEC.md). Choose with the first command-line argument or ITS_TABLE;
 # OUT_DIR redirects output. The 164 / 2,645 / 53 and 248 assertions describe the merged table
 # only, so they are checked only when ITS_TABLE is "merged".
-# The final section (also added 19 Nov 2026) recomputes Figure S4 on the Figure 5 sample set
+# The final section recomputes Figure S4 on the Figure 5 sample set
 # (fungal_fig.R: needle or branch, tree_id present, >= 1,000 reads) so that S4 and Figure 5
 # describe one data set, and reruns the core sweep (counts only) on both sample definitions.
 suppressPackageStartupMessages({library(vegan)})
@@ -53,7 +39,7 @@ ITS_TABLE <- {a <- commandArgs(trailingOnly = TRUE); if (length(a)) a[1] else Sy
 stopifnot(ITS_TABLE %in% c("merged", "r1"))
 SFX <- if (ITS_TABLE == "r1") "_r1" else ""
 cat(sprintf("ITS table: %s (seqtab_nochim%s.rds, taxonomy%s.rds)\n", ITS_TABLE, SFX, SFX))
-OUT <- Sys.getenv("OUT_DIR", file.path(P, "results/reconstructed")); dir.create(OUT, showWarnings = FALSE, recursive = TRUE)
+OUT <- Sys.getenv("OUT_DIR", file.path(P, "results/derived")); dir.create(OUT, showWarnings = FALSE, recursive = TRUE)
 
 man    <- read.csv(file.path(P, "metadata/manifest microbiome runs.csv"), stringsAsFactors = FALSE, check.names = FALSE)
 radman <- read.csv(file.path(P, "metadata/manifest rad runs.csv"), stringsAsFactors = FALSE)
@@ -97,8 +83,7 @@ write.csv(round(byS[top, , drop = FALSE], 5), file.path(OUT, "its_composition.cs
 # ordination: PCA (prcomp, centered, unscaled) of CLR. ASVs are those present in >= 3 of
 # the 248 above-ground libraries with >= 250 reads (the ag_250 library set, with or without a
 # RAD-manifest tree), 637 ASVs, kept even where they are absent from all 164 plotted samples;
-# CLR and PCA are then computed on the 164 plotted samples. This filter is recovered from the
-# output (it is the only one tried that reproduces it), not from surviving code.
+# CLR and PCA are then computed on the 164 plotted samples.
 lib248 <- st[!is.na(man$tree_id[match(rownames(st), man$run_accession)]) &
              man$compartment[match(rownames(st), man$run_accession)] %in% c("needle", "branch") &
              rowSums(st) >= 250, , drop = FALSE]
@@ -120,8 +105,8 @@ ag  <- man$compartment[i] %in% c("branch", "needle") & !is.na(man$tree_id[i])
 s2  <- st[ag, , drop = FALSE]; tid <- man$tree_id[i][ag]; tr <- sort(unique(tid))
 cnt <- t(sapply(tr, function(z) colSums(s2[tid == z, , drop = FALSE])))
 sel <- rowSums(cnt) >= 250; cnt <- cnt[sel, , drop = FALSE]; tr <- tr[sel]
-# NOTE: prevalence >= 5 trees ONLY. q9 also required relative abundance >= 1e-4 (302 ASVs);
-# the surviving its_stand_pairs.tsv is reproduced only without that second condition (333 ASVs).
+# NOTE: prevalence >= 5 trees ONLY (333 ASVs). q9 also required relative abundance >= 1e-4
+# (302 ASVs); its_stand_pairs.tsv does not apply that second condition.
 cnt <- cnt[, colSums(cnt > 0) >= 5, drop = FALSE]
 cat(sprintf("stand pairs: %d trees, %d ASVs\n", nrow(cnt), ncol(cnt)))
 mg <- man[match(tr, man$tree_id), ]; j <- match(tr, ch$tree_id)

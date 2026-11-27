@@ -1,7 +1,7 @@
 """Coastal versus Andean environmental contrast for all 39 extracted variables.
 
-Produces: figdata/env_contrast_all.tsv (written here to an output path given on the
-command line, default ./env_contrast_all.tsv, so the original is never overwritten).
+Produces: figdata/env_contrast_all.tsv (output path given on the command line,
+default ./env_contrast_all.tsv).
 Columns: layer, variable, coastal_mean, andean_mean, cohen_d, perm_p, separates.
 
 Inputs (environment/ in this repository):
@@ -9,7 +9,7 @@ Inputs (environment/ in this repository):
   terrain_per_tree.tsv  6 SRTM terrain variables per tree
   soil_per_stand.tsv    14 SoilGrids 2.0 properties per stand
 
-Method, as recovered from the surviving output:
+Method:
   * Unit is the STAND (12 stands). Per-tree climate and terrain values are averaged
     within stand over every tree in the file (199 trees, not only the 163 genotyped).
   * Coastal = VA, TR, PN (3 stands); Andean = the other 9.
@@ -19,19 +19,10 @@ Method, as recovered from the surviving output:
     Cohen's d (which gives larger values, e.g. clay 0-5 cm 2.90 instead of 1.87).
   * perm_p: exact permutation over all C(12,3) = 220 assignments of 3 stands to the
     Coastal range; statistic |mean difference|; p = share of assignments with a
-    statistic >= the observed one (observed included), so the minimum is 1/220.
+    statistic >= the observed one (observed included, ties counted), so the minimum is 1/220.
   * separates = 1 when the Coastal and Andean stand-mean ranges do not overlap.
   * Rows sorted by perm_p, then by |cohen_d| descending.
 
-Reconstructed 18-19 Nov 2026 to replace lost inline code (original made 31 Aug 2026).
-Verification (18 Nov 2026, against figdata/env_contrast_all.tsv, matched by variable):
-  coastal_mean, andean_mean, cohen_d, separates: identical as printed (max |diff| 0) for
-  all 39 variables. perm_p: identical for 36 of 39; differs for phh2o_5-15cm (0.3682 vs
-  0.3545), phh2o_0-5cm (0.5545 vs 0.4773) and sand_0-5cm (0.5136 vs 0.5045). These three
-  have exact ties in the permutation null (pH is reported to 0.1 units), and the original
-  resolved ties by floating-point noise; this script counts ties as >= the observed value.
-  Because those p-values move, rows 28-33 are ordered slightly differently. Not
-  byte-identical. No retained or separating variable is affected.
 """
 import itertools
 import sys

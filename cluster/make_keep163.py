@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 """The 163-tree working set: prune one member of each close-kin pair within a stand.
 
-PRODUCES  results/reconstructed/keep.txt            two columns (FID IID = run accession), plink --keep
-          results/reconstructed/keep_vcfnames.txt   same trees under their VCF sample names (SRRxxx.1)
-          results/reconstructed/coords.txt          lon lat per kept tree, in keep order (feems input)
-          (originals: results/Q1/feems/keep.txt, keep_vcfnames.txt, coords.txt, 24 Aug 2026; keep.txt
-          is read by clock_da.py, f3_corrected.py, make_migrate_infile.py, abc/load_observed.py and
+PRODUCES  results/derived/keep.txt            two columns (FID IID = run accession), plink --keep
+          results/derived/keep_vcfnames.txt   same trees under their VCF sample names (SRRxxx.1)
+          results/derived/coords.txt          lon lat per kept tree, in keep order (feems input)
+          (copied to results/Q1/feems/; keep.txt is read by clock_da.py, f3_corrected.py, make_migrate_infile.py, abc/load_observed.py and
           others)
           It also prints the SNP count of the 163-tree matrix used downstream (78,026).
 
@@ -19,29 +18,23 @@ RULE      A pair is close kin when ngsRelate theta >= 0.25, both trees are in th
           FEWER called genotypes in the cr30 VCF is dropped. 14 pairs qualify, no tree is in more
           than one pair, so the order of removal does not matter: 177 -> 163.
 
-          The shared-sites floor is NOT stated in ANALYSIS_SPEC.md (which says only "14 within-
-          stand pairs at ngsRelate theta >= 0.25"), but it is required: 19 within-stand pairs reach
+          The shared-sites floor is required: 19 within-stand pairs reach
           theta >= 0.25, and the 5 that were not pruned all rest on 102-203 shared sites, while the
           14 pruned ones rest on 1,592-7,368. Any floor from 204 to 1,592 gives the same set; 1,000
-          is used here. Which member to drop is likewise inferred: in all 14 pairs the dropped tree
-          has fewer called genotypes (it also has the lower summed depth in all 14, so the two
-          criteria cannot be told apart from this output).
+          is used here. In all 14 pairs the tree with fewer called genotypes also has the lower
+          summed depth, so dropping by either criterion gives the same set.
 
 SNP COUNT  78,026 is the number of biallelic SNPs in full_ct091.cr30.vcf (78,802 SNP records minus
           776 multiallelic records), which is the filter scripts/abc/load_observed.py applies. No further
           locus filter is applied for the 163 trees (loci with no calls in them are kept as
           missing columns).
 
-PROVENANCE  Reconstructed 18-19 Nov 2026 to replace lost inline code from 24 Aug 2026.
-VERIFICATION  (run 18 Nov 2026 on McCartney, srun -p basic) keep.txt, keep_vcfnames.txt and
-          coords.txt are each BYTE-IDENTICAL (cmp) to the originals in results/Q1/feems/. The run
-          printed 14 kin pairs, 177 -> 163 trees, 78,802 SNP records, 78,026 biallelic.
 """
 import csv, re, collections
 
 P = "/home/ecastron/araucaria"
 VCF = f"{P}/rad/ipyrad_full/full_ct091_outfiles/full_ct091.cr30.vcf"
-OUT = f"{P}/results/reconstructed"
+OUT = f"{P}/results/derived"
 THETA, MIN_SITES = 0.25, 1000
 
 stand = {r[0]: r[1] for r in csv.reader(open(f"{P}/metadata/popmap_177.tsv"), delimiter="\t")
