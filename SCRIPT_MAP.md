@@ -136,7 +136,7 @@ Reference-genome control on individual-level structure: `cluster/ref/fb_fst_indi
 | order | script | purpose | output | status |
 |---|---|---|---|---|
 | 1 | `figures/qst_fst_test.py` | QST from McIntosh et al. (2025) Table S4 nested ANOVA (values hardcoded) across a range of h2, against the regional Hudson FST | `figdata/qst_fst.json` | FINAL |
-| 2 | `figures/build_F3_journal.py` | Builds Figure 4 (QST across h2, per-trait crossover heritability); file name kept from the earlier numbering | `figures/journal/F3_qst_fst_selection.{pdf,png}` | FINAL |
+| 2 | `figures/build_F4_journal.py` | Builds Figure 4 (QST across h2, per-trait crossover heritability) | `figures/journal/F4_qst_fst_selection.{pdf,png}` | FINAL |
 | | `figures/qst_fst.py` | Earlier QST vs FST using `figdata/host_fst_pairs.tsv` (QST as lower bounds) | | SUPERSEDED |
 
 Note: `qst_fst_test.py` hardcodes the regional FST (0.1059, SE 0.0011). `cluster/ref/regional_fst.py`
@@ -162,7 +162,7 @@ computes that quantity, but no file records the link.
 | 10 | `cluster/abc/export_reftables.py` | Exports the balanced sim9 and sim8 reference tables as CSV | `abcrf/reftable_sim9.csv`, `observed_sim9.csv`, `reftable_sim8.csv`, `observed_sim8.csv` |
 | 11 | `abcrf/abcrf_analysis.R` | abcrf 2.0 model choice (grouped and four-way, 10 replicate forests) and regAbcrf parameter estimation | `figdata/abcrf_results.json`, `figdata/abcrf_weights_{avg,iso,con,broad}.csv` |
 | 12 | `abcrf/abcrf_logscale.R` | Control: regAbcrf on log10 scale parameters | `figdata/abcrf_logscale.json` |
-| 13 | `figures/build_F4_journal.py` | Builds Figure 3 from `abcrf_results.json` and the weights; file name kept from the earlier numbering | `figures/journal/F4_demographic_history.{pdf,png}` |
+| 13 | `figures/build_F3_journal.py` | Builds Figure 3 from `abcrf_results.json` and the weights | `figures/journal/F3_demographic_history.{pdf,png}` |
 | 14 | `figures/build_supp_journal.py` | Builds S1 (model choice and chain architecture) from `abcrf_results.json` and the sim9 tables | `figures/supplementary/journal/` |
 | 15 | `figures/split_sensitivity_table.py` | Table S5: split age under each sensitivity analysis, from `abcrf_results.json` and `abcrf_logscale.json` | `figdata/split_sensitivity.tsv` |
 
