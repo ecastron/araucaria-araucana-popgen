@@ -27,7 +27,6 @@ soil is SoilGrids 2.0, and the forest distribution is the CONAF forest cadastre 
 | Folder | Contents |
 |---|---|
 | `cluster/` | The scripts on the path from raw reads to the data behind each figure, as run on the McCartney HPC cluster (Slurm): assembly, SNP calling and filtering, structure, F_ST, coalescent simulations, fungal community analyses. Development, exploratory and superseded scripts are not included. Scripts keep their cluster paths (`/home/ecastron/araucaria/...`); adjust the project root to rerun them. |
-| `cluster/reconstructed/` | Producers rewritten on 18 to 19 Nov 2026 for derived files whose original code was run interactively and not saved. Each header states the verification (most outputs are byte-identical to the originals). |
 | `abcrf/` | Model choice and parameter estimation with the R package abcrf 2.0, with the reference tables (`reftable_sim9.csv`, literature mutation-rate prior; `reftable_sim8.csv`, broad prior) and observed statistics. |
 | `figures/` | Figure builders (Python, matplotlib). Run from the repository root; they read `figdata/` and `pca_data/` and write `figures/journal/` and `figures/supplementary/journal/`. |
 | `figdata/`, `pca_data/` | The derived data the figure builders read. |
@@ -55,21 +54,6 @@ Rscript abcrf/abcrf_analysis.R          # ABC-RF model choice and estimation (wr
 
 Python 3 with numpy, pandas, matplotlib and pyshp/pyproj (Figure 1 cache). R 4.4 or later with
 abcrf 2.0, ranger, vegan, phyloseq, microbiome, LDM and genio for the cluster analyses.
-
-## Published packages and bespoke code
-
-Standard steps use published packages: ipyrad, bowtie2, FreeBayes, polyRAD, PLINK, sNMF (LEA),
-conStruct, ngsRelate, msprime, abcrf, DADA2, vegan, LDM, phyloseq and microbiome. The following
-parts are bespoke and are described in the Methods:
-
-- held-out coverage of the ABC-RF credible intervals, posterior tail areas and the mode, the
-  contact-detection curve and the zero-migration calibration (no abcrf function exists);
-- the posterior-predictive check of the coalescent models;
-- the clock statistics (branch-length diversity and divergence on the simulated genealogies);
-- Hudson F_ST as a ratio of averages (`hudson_fst` in `cluster/abc/sumstats.py`);
-- the heterozygote-deficit diagnostics and the depth-spread table behind Figure S2E;
-- the low-count check on the most prevalent fungal ASVs (no negative controls were sequenced,
-  so decontam cannot be applied).
 
 ## License and citation
 
