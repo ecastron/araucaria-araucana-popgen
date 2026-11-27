@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""F2 — host genetic structure: PCA, eigenvalues, pairwise Hudson F_ST on distance, sNMF K = 2.
+"""F2: host genetic structure: PCA, eigenvalues, pairwise Hudson F_ST on distance, sNMF K = 2.
 
 JOURNAL STYLE (4 Sep 2026): no title, subtitle, panel headlines or on-canvas footnote.
 Interpretation lives in ARAUCARIA_figure_legends.docx."""
@@ -19,15 +19,18 @@ mpl.rcParams.update({"font.family":"sans-serif",
 COASTAL={"VA","TR","PN"}
 
 pop=dict(l.split() for l in open("figdata/popmap_177.tsv") if l.strip())
-ev=pd.read_csv("pca_data/q1_pca_plink.eigenvec",sep=r"\s+",header=None)
+# 26 Nov 2026: PCA and sNMF on the 163 analyzed trees (was all 177 libraries, relatives and
+# second libraries included). Sources: scripts/revision/structure.sbatch (plink 1.9 PCA on
+# LD-pruned SNPs, --indep-pairwise 50 5 0.2, 66,131 SNPs) and scripts/revision/snmf.R
+# (LEA sNMF K = 2, 10 repetitions, alpha 100, best run; column "coastal" oriented to Coastal).
+ev=pd.read_csv("pca_data/q1_pca_plink163.eigenvec",sep=r"\s+",header=None)
 ev["id"]=ev[0].str.replace(r"\.\d+$","",regex=True)
 ev["stand"]=ev["id"].map(pop)
 ev=ev.dropna(subset=["stand"])
-val=np.loadtxt("pca_data/q1_pca_plink.eigenval"); pct=100*val/177.0
-Q=np.loadtxt("pca_data/snmf_K2.Q")
-samp=[l.strip() for l in open("pca_data/ours91.geno.samples") if l.strip()]
-qs=pd.DataFrame({"id":samp,"coastal":Q[:,0]}); qs["stand"]=qs["id"].map(pop)
-qs=qs.dropna(subset=["stand"])
+assert len(ev)==163, len(ev)
+val=np.loadtxt("pca_data/q1_pca_plink163.eigenval"); pct=100*val/len(ev)
+qs=pd.read_csv("pca_data/snmf_K2_163.tsv",sep="\t")[["id","stand","coastal"]]
+assert len(qs)==163 and qs["stand"].notna().all()
 fst=pd.read_csv("figdata/host_fst_pairs.tsv",sep="\t")
 
 fig=plt.figure(figsize=(13.6,11.6)); fig.patch.set_facecolor(BG)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""F5 — the fungal endophyte community.
+"""F5: the fungal endophyte community.
 
 A  dbRDA constrained on range + compartment (rank 2, so dbRDA1 and dbRDA2 both exist;
    range alone is a 2-level factor and yields a single axis), Bray-Curtis
@@ -140,23 +140,26 @@ ks=[2,4,8]
 for nm,col,mk in MODELS:
     sub=D[D["model"]==nm].sort_values("k")
     ax.plot(sub["k"],sub["R2"],color=col,lw=2.0,marker=mk,ms=8,mfc=PANEL,mew=1.7,zorder=4,label=nm)
-    # the three models converge at k = 2, so their p labels are fanned vertically
-    # the two conditioned models nearly coincide, so their labels are offset sideways as well
+    # p labels take the color of their series (26 Nov 2026: neutral gray labels were read against
+    # the wrong line); the unconditioned series is labeled above, "| range" above left and
+    # "| stand" below its marker, so the two conditioned series stay apart where they coincide
     off={"genetic PCs, no conditioning":(0,12,"center"),
-         "genetic PCs | stand":(-21,-15,"right"),
-         "genetic PCs | range":(23,-15,"left")}[nm]
+         "genetic PCs | stand":(0,-19,"center"),
+         "genetic PCs | range":(-12,7,"right")}[nm]
     for _,r in sub.iterrows():
         sig=r["p"]<0.05
+        o=off
+        if nm.endswith("range") and r["k"]==2: o=(14,-16,"left")   # left of k = 2 is the y axis; above right is the line
         ax.annotate(("%.4f" if r["p"]<0.001 else "%.3f")%r["p"],(r["k"],r["R2"]),textcoords="offset points",
-                    xytext=(off[0],off[1]),ha=off[2],fontsize=8.2,
-                    color=INK if sig else MUTED,fontweight="bold" if sig else "normal")
+                    xytext=(o[0],o[1]),ha=o[2],fontsize=8.2,
+                    color=INK if nm.endswith("conditioning") else col,fontweight="bold" if sig else "normal",zorder=7)
 for nm,val in (("range",D.loc[D["model"]=="range","R2"].values[0]),
                ("stand",D.loc[D["model"]=="site_code","R2"].values[0])):
     ax.axhline(val,color=GREEN,lw=1.2,ls=":",zorder=2)
     ax.text(2.05,val,"%s, %.3f"%(nm,val),fontsize=8.2,color=GREEN,va="bottom",ha="left",
             bbox=dict(fc=PANEL,ec="none",pad=1.2),zorder=6)
 ax.set_xscale("log",base=2); ax.set_xticks(ks); ax.set_xticklabels(ks)
-ax.set_xlim(1.80,9.9)
+ax.set_xlim(1.80,9.9); ax.set_ylim(bottom=0.018)   # room for the k = 2 "| stand" label
 ax.set_xlabel("number of SNP principal components fitted")
 ax.set_ylabel(r"variance explained in fungal composition ($R^2$)")
 ax.legend(frameon=True,facecolor=PANEL,edgecolor=RULE,fontsize=8.2,loc="upper left",

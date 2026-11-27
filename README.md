@@ -31,6 +31,7 @@ soil is SoilGrids 2.0, and the forest distribution is the CONAF forest cadastre 
 | `abcrf/` | Model choice and parameter estimation with the R package abcrf 2.0, with the reference tables (`reftable_sim9.csv`, literature mutation-rate prior; `reftable_sim8.csv`, broad prior) and observed statistics. |
 | `figures/` | Figure builders (Python, matplotlib). Run from the repository root; they read `figdata/` and `pca_data/` and write `figures/journal/` and `figures/supplementary/journal/`. |
 | `figdata/`, `pca_data/` | The derived data the figure builders read. |
+| `analysis/` | Local analyses added in the November 2026 revision (see `SCRIPT_MAP.md`, section 8). Run from the repository root; they write `figdata/revision/`. |
 | `environment/` | Climate, soil and terrain extraction per tree and per stand. |
 | `metadata/` | SRA run manifests. |
 

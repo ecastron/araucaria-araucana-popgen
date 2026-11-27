@@ -1,0 +1,184 @@
+{
+  "importance_one_vs_two": {
+    "private_ratio": 0.2349,
+    "LD1": 0.183,
+    "lowfreq_cor": 0.1038,
+    "xgap_min_ratio": 0.057,
+    "fst_between_within_ratio": 0.0567,
+    "pc1_pc2_ratio": 0.055,
+    "f3_frac_neg": 0.0468,
+    "ibd_r": 0.0432,
+    "ibd_r2": 0.0417,
+    "pc1_share": 0.0403,
+    "fst_cv": 0.0391,
+    "coastal_excess_sd": 0.0336,
+    "xgap_corridor_r": 0.029,
+    "log_piA": 0.0124,
+    "log_piC": 0.0123,
+    "log_dxy": 0.0111
+  },
+  "importance_iso_vs_contact": {
+    "LD1": 0.1102,
+    "xgap_corridor_r": 0.1006,
+    "xgap_min_ratio": 0.0909,
+    "pc1_share": 0.072,
+    "pc1_pc2_ratio": 0.067,
+    "lowfreq_cor": 0.0647,
+    "coastal_excess_sd": 0.0582,
+    "private_ratio": 0.0575,
+    "ibd_r2": 0.0519,
+    "ibd_r": 0.051,
+    "fst_between_within_ratio": 0.05,
+    "fst_cv": 0.0495,
+    "log_dxy": 0.0457,
+    "log_piA": 0.0451,
+    "log_piC": 0.0445,
+    "f3_frac_neg": 0.0412
+  },
+  "calibration_one_vs_two": {
+    "n_heldout": 1112,
+    "overall_mean_posterior": 0.95321,
+    "overall_correct": 0.96673,
+    "heldout_ge_0.95": {
+      "n": 822,
+      "share_correct": 1
+    }
+  },
+  "calibration_iso_vs_contact": {
+    "n_heldout": 556,
+    "overall_mean_posterior": 0.63498,
+    "overall_correct": 0.67806,
+    "heldout_ge_0.95": {
+      "n": 46,
+      "share_correct": 1
+    }
+  },
+  "calibration_tables": [
+    {
+      "comparison": "one_vs_two_refugia",
+      "bin": "[0.5,0.6)",
+      "n": 4,
+      "mean_posterior": 0.571,
+      "share_correct": 1,
+      "_row": "[0.5,0.6)"
+    },
+    {
+      "comparison": "one_vs_two_refugia",
+      "bin": "[0.6,0.7)",
+      "n": 26,
+      "mean_posterior": 0.661,
+      "share_correct": 0.654,
+      "_row": "[0.6,0.7)"
+    },
+    {
+      "comparison": "one_vs_two_refugia",
+      "bin": "[0.7,0.8)",
+      "n": 45,
+      "mean_posterior": 0.761,
+      "share_correct": 0.822,
+      "_row": "[0.7,0.8)"
+    },
+    {
+      "comparison": "one_vs_two_refugia",
+      "bin": "[0.8,0.9)",
+      "n": 101,
+      "mean_posterior": 0.857,
+      "share_correct": 0.881,
+      "_row": "[0.8,0.9)"
+    },
+    {
+      "comparison": "one_vs_two_refugia",
+      "bin": "[0.9,0.95)",
+      "n": 114,
+      "mean_posterior": 0.929,
+      "share_correct": 0.93,
+      "_row": "[0.9,0.95)"
+    },
+    {
+      "comparison": "one_vs_two_refugia",
+      "bin": "[0.95,1)",
+      "n": 822,
+      "mean_posterior": 0.99,
+      "share_correct": 1,
+      "_row": "[0.95,1)"
+    },
+    {
+      "comparison": "isolation_vs_contact",
+      "bin": "[0.5,0.6)",
+      "n": 115,
+      "mean_posterior": 0.551,
+      "share_correct": 0.496,
+      "_row": "[0.5,0.6)1"
+    },
+    {
+      "comparison": "isolation_vs_contact",
+      "bin": "[0.6,0.7)",
+      "n": 125,
+      "mean_posterior": 0.651,
+      "share_correct": 0.672,
+      "_row": "[0.6,0.7)1"
+    },
+    {
+      "comparison": "isolation_vs_contact",
+      "bin": "[0.7,0.8)",
+      "n": 58,
+      "mean_posterior": 0.744,
+      "share_correct": 0.81,
+      "_row": "[0.7,0.8)1"
+    },
+    {
+      "comparison": "isolation_vs_contact",
+      "bin": "[0.8,0.9)",
+      "n": 58,
+      "mean_posterior": 0.853,
+      "share_correct": 0.931,
+      "_row": "[0.8,0.9)1"
+    },
+    {
+      "comparison": "isolation_vs_contact",
+      "bin": "[0.9,0.95)",
+      "n": 14,
+      "mean_posterior": 0.919,
+      "share_correct": 1,
+      "_row": "[0.9,0.95)1"
+    },
+    {
+      "comparison": "isolation_vs_contact",
+      "bin": "[0.95,1)",
+      "n": 46,
+      "mean_posterior": 0.985,
+      "share_correct": 1,
+      "_row": "[0.95,1)1"
+    }
+  ],
+  "split_events": {
+    "lt_10kyr": {
+      "prior": 0.24282,
+      "post": 0.03692,
+      "bayes_factor": 0.11953
+    },
+    "gt_26.5kyr": {
+      "prior": 0.64045,
+      "post": 0.84775,
+      "bayes_factor": 3.12603
+    },
+    "gt_115kyr": {
+      "prior": 0.47522,
+      "post": 0.30665,
+      "bayes_factor": 0.48841
+    }
+  },
+  "split_prior_median_kyr": 89.99359,
+  "Nm_zero_migration": {
+    "observed_median": 0.389,
+    "isolation_estimates_quantiles": {
+      "q05": 0.01833,
+      "q25": 0.07601,
+      "q50": 0.22779,
+      "q75": 0.74727,
+      "q95": 3.68831
+    },
+    "share_isolation_at_or_above_observed": 0.38649,
+    "prior_median_contact": 0.54651
+  }
+}

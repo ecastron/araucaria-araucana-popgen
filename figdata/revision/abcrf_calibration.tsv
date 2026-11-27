@@ -1,0 +1,13 @@
+comparison	bin	n	mean_posterior	share_correct
+one_vs_two_refugia	[0.5,0.6)	4	0.571	1
+one_vs_two_refugia	[0.6,0.7)	26	0.661	0.654
+one_vs_two_refugia	[0.7,0.8)	45	0.761	0.822
+one_vs_two_refugia	[0.8,0.9)	101	0.857	0.881
+one_vs_two_refugia	[0.9,0.95)	114	0.929	0.93
+one_vs_two_refugia	[0.95,1)	822	0.99	1
+isolation_vs_contact	[0.5,0.6)	115	0.551	0.496
+isolation_vs_contact	[0.6,0.7)	125	0.651	0.672
+isolation_vs_contact	[0.7,0.8)	58	0.744	0.81
+isolation_vs_contact	[0.8,0.9)	58	0.853	0.931
+isolation_vs_contact	[0.9,0.95)	14	0.919	1
+isolation_vs_contact	[0.95,1)	46	0.985	1

@@ -1,0 +1,8 @@
+variable	label	d	d_without_VA	d_without_TR	d_without_PN	d_loo_min	d_loo_max	boot_lo95	boot_hi95	coastal_values	andean_range
+bio5	max temperature of warmest month (C)	0.033	0.173	-0.052	-0.027	-0.124	0.553	-0.684	1.312	VA 18.8, TR 19.5, PN 19.4	17.5 to 22.7
+bio6	min temperature of coldest month (C)	1.774	1.738	2.016	2.055	1.707	2.055	1.486	2.163	VA 3.09, TR -0.534, PN -0.77	-5.02 to -1.27
+bio18	precipitation of warmest quarter (mm)	-1.298	-1.271	-1.374	-1.257	-1.431	-1.22	-1.798	-0.967	VA 166, TR 189, PN 163	183 to 442
+clay_0-5cm	clay (%)	1.868	1.956	2.001	1.966	1.802	2.001	1.606	2.2	VA 35.7, TR 34.4, PN 35.4	15.3 to 30.8
+cec_0-5cm	cation exchange capacity (mmol(c)/kg)	1.391	1.31	1.837	1.147	1.147	1.837	0.46	2.087	VA 35.7, TR 32.6, PN 36.9	28.8 to 34.8
+phh2o_0-5cm	pH	-0.519	-0.397	-0.71	-0.397	-0.921	-0.381	-1.495	0.329	VA 5.6, TR 5.7, PN 5.6	5.4 to 5.9
+nitrogen_0-5cm	total nitrogen (g/kg)	-1.115	-0.918	-1.208	-1.192	-1.355	-0.918	-1.829	-0.484	VA 5.86, TR 6.24, PN 6.22	5.88 to 7.65

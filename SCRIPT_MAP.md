@@ -110,9 +110,9 @@ The individual mechanism tests summarized in Supplementary Note 1 (null models o
 |---|---|---|---|---|
 | 1 | `cluster/q1_popgen.py` | Per-stand diversity, genetic distance matrix, stand table (its FST and PCA were replaced, see `q1_fixed.sh`) | `results/Q1/q1_genetic_distance.tsv`, `q1_stands.tsv` | FINAL (inputs to AMOVA) |
 | 2 | `cluster/q1_amova.R` | Distance-based AMOVA (adonis2) and beta dispersion | AMOVA 15.8% among stands | FINAL |
-| 3 | `cluster/q1_fixed.sh` | PLINK LD-pruned PCA, ADMIXTURE CV, and vcftools W&C FST | `pca_data/q1_pca_plink.eigen{vec,val}`, `results/Q1/q1_admixture_cv.txt`, `figdata/q1_fst_vcftools.tsv` | FINAL for PCA and ADMIXTURE; its W&C FST is SUPERSEDED by Hudson |
+| 3 | `cluster/q1_fixed.sh` | PLINK LD-pruned PCA, ADMIXTURE CV, and vcftools W&C FST | `pca_data/q1_pca_plink.eigen{vec,val}`, `results/Q1/q1_admixture_cv.txt`, `figdata/q1_fst_vcftools.tsv` | SUPERSEDED for Figure 2 (all 177 libraries; replaced by the 163-tree PCA in section 8); its W&C FST is SUPERSEDED by Hudson |
 | 4 | `cluster/vcf2geno.py` | VCF to LEA `.geno` | `pca_data/ours91.geno.samples` | FINAL |
-| 5 | `cluster/run_snmf.R` | sNMF (LEA) on the working set and on a published-style set | `pca_data/snmf_K2.Q` | FINAL |
+| 5 | `cluster/run_snmf.R` | sNMF (LEA) on the working set and on a published-style set | `pca_data/snmf_K2.Q` | SUPERSEDED for Figure 2 (all 177 libraries; replaced by `cluster/revision/snmf.R` on the 163 trees) |
 | 6 | `cluster/run_construct.R` | conStruct spatial vs nonspatial models | | FINAL |
 | 7 | `cluster/run_construct_cv.R` | conStruct cross-validation at 16 replicates (K = 2 vs 3) | | FINAL |
 | 8 | `cluster/ref/fst_estimator_control.py` with `cluster/ref/fst_ctl.sh` | Hudson vs W&C (observed and HWE heterozygosity) on one SNP set | `figdata/fst_estimator_control.tsv` | FINAL (estimator choice) |
@@ -121,7 +121,7 @@ The individual mechanism tests summarized in Supplementary Note 1 (null models o
 | 11 | `cluster/q4_ibd_residual.R` | IBD and the Coastal excess beyond distance (log: +0.0438, p = 0.0042) | | FINAL |
 | 12 | `cluster/f3_corrected.py` | Bias-corrected f3 over all 660 triples | | FINAL |
 | 13 | `cluster/abc/f3_targeted.py` | f3 restricted to the 270 triples that can detect cross-gap admixture, 50-block jackknife | | FINAL |
-| 14 | `figures/build_F2_journal.py` | Builds Figure 2 (PCA, eigenvalues, Hudson FST on distance, sNMF K = 2) | `figures/journal/F2_host_structure.{pdf,png}` | FINAL |
+| 14 | `figures/build_F2_journal.py` | Builds Figure 2 (PCA, eigenvalues, Hudson FST on distance, sNMF K = 2) from the 163-tree PCA and sNMF files of section 8 (`pca_data/q1_pca_plink163.eigen{vec,val}`, `pca_data/snmf_K2_163.tsv`) | `figures/journal/F2_host_structure.{pdf,png}` | FINAL |
 
 Reference-genome control on individual-level structure: `cluster/ref/fb_fst_indiv.py` with `cluster/ref/fb_fst_indiv.sh` (`figdata/fb_fst_indiv.tsv`, Figure S3).
 
@@ -192,5 +192,25 @@ computes that quantity, but no file records the link.
 
 ---
 
+
+## 8. Revision analyses (November 2026)
+
+Robustness checks and additions made in the November 2026 revision. Cluster scripts live in
+`cluster/revision/` (on McCartney `scripts/revision/`, outputs in `results/revision/`); local scripts
+in `analysis/` run from the repository root and write `figdata/revision/`.
+
+| order | script | purpose | output | status |
+|---|---|---|---|---|
+| 1 | `cluster/revision/structure.py` with `cluster/revision/structure.sbatch` | 163-tree genotype files for sNMF, LD-pruned PLINK PCA (`--indep-pairwise 50 5 0.2`, 66,131 SNPs), one-SNP-per-locus set, ADMIXTURE CV | `results/revision/pca_ld.eigen{vec,val}` (copied to `pca_data/q1_pca_plink163.eigen{vec,val}`), `structure.json` | FINAL (Figure 2A, B) |
+| 2 | `cluster/revision/snmf.R` (called by `structure.sbatch`) | sNMF K = 1 to 6 on the 163 trees (10 repetitions, alpha 100) | `snmf_all163_K2.Q` (copied to `pca_data/snmf_K2_163.tsv`), `figdata/revision/snmf_all163.tsv` | FINAL (Figure 2E) |
+| 3 | `cluster/revision/ancestry_null.py`, `ancestry_null.R` with `ancestry_null.sbatch` | sNMF K = 2 on 50 two-refugia (no migration) and 50 secondary-contact simulations at the parameter sets of the sim9 reference table nearest the observed statistics, and on the observed data | `figdata/revision/ancnull/` | FINAL |
+| 4 | `analysis/ancestry_null_summary.py` | Observed sNMF coefficients against the simulated distributions | `figdata/revision/ancestry_null_summary.json` | FINAL (Results, ancestry) |
+| 5 | `analysis/ibd_mrm.R` | Multiple regression on distance matrices (`ecodist::MRM`): FST/(1 - FST) on log distance and a binary different-range matrix, with and without VA | `figdata/revision/ibd_mrm.json` | FINAL (Results, isolation by distance) |
+| 6 | `analysis/abcrf_diagnostics.R` | ABC-RF variable importance, posterior calibration on held-out simulations, prior probabilities and Bayes factors of the split-age events | `figdata/revision/abcrf_*` | FINAL (Results, split age priors) |
+| 7 | `analysis/env_stand_values.py` | Stand values of the environmental variables and leave-one-stand-out d | `figdata/revision/env_stand_values.tsv`, `env_loo.tsv` | FINAL (Table S6) |
+| 8 | `cluster/revision/qc_table.sh` | Per-tree read counts, loci, call rate and bowtie2 mapping statistics | `figdata/revision/qc_per_tree.tsv` | FINAL (Table S7) |
+| 9 | `cluster/revision/its.R` with `cluster/revision/its.sbatch` | Endophyte range effect with the stand as the unit (all 36 assignments of two of nine stands to the Coastal range); Shannon tests at four rarefaction depths | `figdata/revision/its_stand_perm.tsv`, `its_rarefaction_sensitivity.tsv` | FINAL (Results and Figure 5 legend) |
+
+---
 
 **Input metadata (not derived):** `figdata/popmap_177.tsv` (library to stand map) and `metadata/` (SRA run manifests; the `collection_date` column is added by `metadata/add_collection_dates.py` from the BioSample records). `figdata/stand_coords.npz` is rebuilt by `figures/reconstructed/stand_coords.py` from `metadata/sra_runs_radseq.csv` and `figdata/keep163.txt`.
