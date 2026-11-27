@@ -32,6 +32,7 @@ soil is SoilGrids 2.0, and the forest distribution is the CONAF forest cadastre 
 | `figures/` | Figure builders (Python, matplotlib). Run from the repository root; they read `figdata/` and `pca_data/` and write `figures/journal/` and `figures/supplementary/journal/`. |
 | `figdata/`, `pca_data/` | The derived data the figure builders read. |
 | `analysis/` | Local analyses added in the November 2026 revision (see `SCRIPT_MAP.md`, section 8). Run from the repository root; they write `figdata/revision/`. |
+| `data/` | Genotypes of the 163 analyzed trees at 78,026 SNPs (`araucaria_163trees_78026snps.vcf.gz`, samples named by SRA run accession) and the ITS1 ASV table with taxonomy (`its1_asv_counts.csv.gz`, `its1_asv_taxonomy.csv.gz`). |
 | `environment/` | Climate, soil and terrain extraction per tree and per stand. |
 | `metadata/` | SRA run manifests. |
 

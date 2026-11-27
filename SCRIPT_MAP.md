@@ -210,6 +210,7 @@ in `analysis/` run from the repository root and write `figdata/revision/`.
 | 7 | `analysis/env_stand_values.py` | Stand values of the environmental variables and leave-one-stand-out d | `figdata/revision/env_stand_values.tsv`, `env_loo.tsv` | FINAL (Table S6) |
 | 8 | `cluster/revision/qc_table.sh` | Per-tree read counts, loci, call rate and bowtie2 mapping statistics | `figdata/revision/qc_per_tree.tsv` | FINAL (Table S7) |
 | 9 | `cluster/revision/its.R` with `cluster/revision/its.sbatch` | Endophyte range effect with the stand as the unit (all 36 assignments of two of nine stands to the Coastal range); Shannon tests at four rarefaction depths | `figdata/revision/its_stand_perm.tsv`, `its_rarefaction_sensitivity.tsv` | FINAL (Results and Figure 5 legend) |
+| 10 | `cluster/revision/export_genotypes.py`, `export_asv_table.R` with `export_data.sbatch` | Genotypes of the 163 analyzed trees at the 78,026 biallelic SNPs (all FORMAT fields; samples named by SRA run) and the ITS1 ASV table with UNITE taxonomy, for archiving | `data/araucaria_163trees_78026snps.vcf.gz`, `data/its1_asv_counts.csv.gz`, `data/its1_asv_taxonomy.csv.gz` | FINAL (Data Accessibility) |
 
 ---
 
