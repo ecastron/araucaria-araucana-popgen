@@ -40,7 +40,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ENV = Path(__file__).resolve().parents[2] / "environment"
+ENV = Path(__file__).resolve().parents[1] / "environment"
 OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("env_contrast_all.tsv")
 COASTAL = {"VA", "TR", "PN"}
 

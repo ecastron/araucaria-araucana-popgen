@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Stand coordinates for Figures 1 and S1: mean longitude and latitude of the 163 kept trees per stand
 (metadata/sra_runs_radseq.csv; figdata/keep163.txt, a copy of results/Q1/feems/keep.txt written by
-cluster/reconstructed/make_keep163.py). Coastal stands: VA, TR, PN.
+cluster/make_keep163.py). Coastal stands: VA, TR, PN.
 Reconstructed 19 Nov 2026 to replace lost inline code; matches figdata/stand_coords.npz to 3e-14.
-Usage: python figures/reconstructed/stand_coords.py [OUT]   (default: a new file, never the original)"""
+Usage: python figures/stand_coords.py [OUT]   (default: a new file, never the original)"""
 import sys, numpy as np, pandas as pd
 OUT = sys.argv[1] if len(sys.argv) > 1 else "stand_coords_rebuilt.npz"
 m = pd.read_csv("metadata/sra_runs_radseq.csv").set_index("run_accession")

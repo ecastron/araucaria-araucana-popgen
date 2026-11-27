@@ -12,7 +12,7 @@
 #SBATCH -e /home/ecastron/araucaria/logs/s2e_%j.err
 set -euo pipefail
 P=/home/ecastron/araucaria
-S=$P/scripts/reconstructed
+S=$P/scripts
 V=$P/rad/ipyrad_full/full_ct091_outfiles/full_ct091.cr30.vcf
 POP=$P/metadata/popmap_177.tsv
 O=$P/results/reconstructed/s2e

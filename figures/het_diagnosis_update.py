@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """19 Nov 2026: correct figdata/het_diagnosis.json with the reproduced S2E data (figdata/s2e_mechanisms.tsv,
-from cluster scripts reconstructed/s2e_*.py/.R, job 45389). Replaces three mechanism strings whose numbers had no
+from cluster scripts s2e_*.py/.R, job 45389). Replaces three mechanism strings whose numbers had no
 producer or used mismatched baselines, and the spread_after_intervention block (superseded by the table, which
 Figure S2E now reads directly). The previous file is kept as figdata/het_diagnosis.pre20261119.json."""
 import json, shutil, pandas as pd

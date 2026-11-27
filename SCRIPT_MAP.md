@@ -38,7 +38,7 @@ Path conventions:
 | 6 | `environment/pull_soil_raster.py` | SoilGrids surfaces for the four final soil variables | `figdata/soilgrids_soil.npz` | FINAL |
 | 7 | `figures/build_F1_journal.py` | Builds Figure 1 | `figures/journal/F1_distribution_sampling.{pdf,png}` | FINAL |
 
-**Producer (reconstructed 19 Nov 2026):** `figures/reconstructed/env_contrast_all.py` writes `figdata/env_contrast_all.tsv` from the files in `environment/` (stand means, Coastal = VA, TR, PN; d = Coastal minus Andean mean divided by the SD across the 12 stand means; exact permutation p over all 220 labelings). Means and d reproduce exactly; 3 of 39 permutation p-values (pH at two depths, sand), none used in the paper, differ by tie handling. `figdata/soilgrids_clay.npz` comes from `environment/pull_soil_raster.py`.
+**Producer:** `figures/env_contrast_all.py` writes `figdata/env_contrast_all.tsv` from the files in `environment/` (stand means, Coastal = VA, TR, PN; d = Coastal minus Andean mean divided by the SD across the 12 stand means; exact permutation p over all 220 labelings). Means and d reproduce exactly; 3 of 39 permutation p-values (pH at two depths, sand), none used in the paper, differ by tie handling. `figdata/soilgrids_clay.npz` comes from `environment/pull_soil_raster.py`.
 
 ---
 
@@ -62,7 +62,7 @@ Path conventions:
 | 6 | `cluster/tstv_recovery.py` | Ts/Tv under filtering (0.48 unfiltered, 1.52 at cr30) used to validate the 30% floor | | FINAL (validation) |
 | 7 | `cluster/run_q2.sh` with `cluster/catg_to_beagle.py` | CATG read counts to genotype likelihoods, then ngsRelate kinship | `results/Q2/ngsrelate.tsv` | FINAL (kinship used for relative pruning) |
 
-**Producer (reconstructed 19 Nov 2026):** `cluster/reconstructed/make_keep163.py` writes `keep.txt` (byte-identical): one member of each within-stand pair at ngsRelate theta >= 0.25 sharing at least 1,000 sites is removed, keeping the tree with more called genotypes (14 pairs, 177 to 163 trees). The 78,026 SNPs are the biallelic subset of the 78,802-record cr30 VCF, as filtered in `cluster/abc/load_observed.py`.
+**Producer:** `cluster/make_keep163.py` writes `keep.txt` (byte-identical): one member of each within-stand pair at ngsRelate theta >= 0.25 sharing at least 1,000 sites is removed, keeping the tree with more called genotypes (14 pairs, 177 to 163 trees). The 78,026 SNPs are the biallelic subset of the 78,802-record cr30 VCF, as filtered in `cluster/abc/load_observed.py`.
 
 ### 2c. Reference-based calling (bowtie2 and FreeBayes, AraucariaDB v1 genome)
 
@@ -78,7 +78,7 @@ Path conventions:
 | 6b | `cluster/ref/fb_convert_only.sh`, `cluster/ref/fb_bgzip.sh` | Re-run helpers for the AD conversion and bgzip/tabix | FINAL (helpers) |
 | 7 | `cluster/ref/run_polyrad_fb.sh` with `cluster/ref/polyrad_fb.R` | polyRAD genotyping of the reference calls | FINAL |
 
-**Producer (reconstructed 19 Nov 2026):** `cluster/reconstructed/make_fb_regions.py` writes `rad_regions.bed`, `rad_regions_clamped.bed` and the 200 `fb_chunks/chunk_NNN` files from `loci_vs_genome.paf` (primary alignments, query coverage >= 0.8, identity >= 0.9, 50 bp padding, merged, clamped to contig length, then GNU `split -n l/200`); all byte-identical to the originals.
+**Producer:** `cluster/make_fb_regions.py` writes `rad_regions.bed`, `rad_regions_clamped.bed` and the 200 `fb_chunks/chunk_NNN` files from `loci_vs_genome.paf` (primary alignments, query coverage >= 0.8, identity >= 0.9, 50 bp padding, merged, clamped to contig length, then GNU `split -n l/200`); all byte-identical to the originals.
 
 ## 3. Genotype-quality diagnosis (Figures S2, S3)
 
@@ -94,13 +94,13 @@ Path conventions:
 | `cluster/ref/fb_fst_indiv.sh`, `cluster/ref/fb_fst_indiv.py` | Hudson FST per stand pair from reference calls, trees weighted equally (S3: de novo vs reference FST) | `figdata/fb_fst_indiv.tsv` |
 | `figures/build_supp_journal.py` | Builds S1 to S4. S2 = heterozygote deficit (A to E), S3 = de novo vs reference FST | `figures/supplementary/journal/` |
 
-**Producers (reconstructed 19 Nov 2026):** `cluster/reconstructed/allele_balance.py` writes `allele_balance.txt` (byte-identical). `het_diagnosis.json` is assembled from rerun diagnostics by `cluster/reconstructed/het_diagnosis_inputs.sbatch` and `het_diagnosis_assemble.py`, and corrected by `figures/reconstructed/het_diagnosis_update.py`. Figure S2E reads `figdata/s2e_mechanisms.tsv`, written by `cluster/reconstructed/s2e_mechanisms.sbatch` (`s2e_binomial_route.py`, `s2e_polyrad_route.R`, `s2e_assemble.py`), which also writes the binomial series of S2D (`figdata/ipyrad_binomial_F.tsv`). `figdata/polyrad_F_by_depth.csv` was written by `cluster/ref/polyrad_F_fixed.R` (identical to `results/polyrad/polyrad_F_by_depth_fixed.csv`).
+**Producers:** `cluster/allele_balance.py` writes `allele_balance.txt` (byte-identical). `het_diagnosis.json` is assembled from rerun diagnostics by `cluster/het_diagnosis_inputs.sbatch` and `het_diagnosis_assemble.py`, and corrected by `figures/het_diagnosis_update.py`. Figure S2E reads `figdata/s2e_mechanisms.tsv`, written by `cluster/s2e_mechanisms.sbatch` (`s2e_binomial_route.py`, `s2e_polyrad_route.R`, `s2e_assemble.py`), which also writes the binomial series of S2D (`figdata/ipyrad_binomial_F.tsv`). `figdata/polyrad_F_by_depth.csv` was written by `cluster/ref/polyrad_F_fixed.R` (identical to `results/polyrad/polyrad_F_by_depth_fixed.csv`).
 
 ### 3b. Mechanism tests and controls (DIAGNOSTIC)
 
 Grouped by question. All read the cr30 VCF, CATG counts or reference BAMs.
 
-The individual mechanism tests summarized in Supplementary Note 1 (null models of F versus depth, dosage, copy number, segmental duplication, lane hopping and others) are development diagnostics and are not distributed; the six whose outputs feed `figdata/het_diagnosis.json` are rerun by `cluster/reconstructed/het_diagnosis_inputs.sbatch`.
+The individual mechanism tests summarized in Supplementary Note 1 (null models of F versus depth, dosage, copy number, segmental duplication, lane hopping and others) are development diagnostics and are not distributed; the six whose outputs feed `figdata/het_diagnosis.json` are rerun by `cluster/het_diagnosis_inputs.sbatch`.
 
 ---
 
@@ -125,7 +125,7 @@ The individual mechanism tests summarized in Supplementary Note 1 (null models o
 
 Reference-genome control on individual-level structure: `cluster/ref/fb_fst_indiv.py` with `cluster/ref/fb_fst_indiv.sh` (`figdata/fb_fst_indiv.tsv`, Figure S3).
 
-**Producer (reconstructed 19 Nov 2026):** `cluster/reconstructed/host_fst_pairs.py` writes `figdata/host_fst_pairs.tsv` and `stand_fst_matrix.tsv` (both byte-identical) with the project's Hudson estimator (`hudson_fst` in `cluster/abc/sumstats.py`; ratio of averages, at least 6 called chromosomes per stand) and haversine distances between stand centroids.
+**Producer:** `cluster/host_fst_pairs.py` writes `figdata/host_fst_pairs.tsv` and `stand_fst_matrix.tsv` (both byte-identical) with the project's Hudson estimator (`hudson_fst` in `cluster/abc/sumstats.py`; ratio of averages, at least 6 called chromosomes per stand) and haversine distances between stand centroids.
 
 **SUPERSEDED or EXPLORATORY:**
 
@@ -186,7 +186,7 @@ computes that quantity, but no file records the link.
 
 **ITS table (resolved 19 Nov 2026):** the paper uses the forward-read table (`seqtab_nochim_r1.rds`, `dada2_its_r1.R`), as decided on 4 August 2026 by a rule fixed before the comparison. The fungal scripts take the table as an argument or `ITS_TABLE` (`merged` by default, which reproduces the earlier merged-pair outputs byte for byte; `r1` for the paper). Paper outputs: `figdata/fungfig_r1/`, `figdata/its_prevalence_r1.csv`, `figdata/core/`.
 
-**Producers:** `cluster/reconstructed/its_figdata.R` writes the `its_*` tables and the S4 prevalence (reconstructed; the merged-table outputs are byte-identical or match to 1e-13). The core community (Figure S4B) is computed with the R package microbiome on phyloseq objects by `cluster/core_microbiome.R` (ASV and family, all reads and rarefied to equal depth). ITS needed no decontamination step (all ASVs assign to Fungi); no negative controls were sequenced, so decontam does not apply.
+**Producers:** `cluster/its_figdata.R` writes the `its_*` tables and the S4 prevalence (the merged-table outputs are byte-identical or match to 1e-13). The core community (Figure S4B) is computed with the R package microbiome on phyloseq objects by `cluster/core_microbiome.R` (ASV and family, all reads and rarefied to equal depth). ITS needed no decontamination step (all ASVs assign to Fungi); no negative controls were sequenced, so decontam does not apply.
 
 **EXPLORATORY or SUPERSEDED (microbiome):**
 
@@ -214,4 +214,4 @@ in `analysis/` run from the repository root and write `figdata/revision/`.
 
 ---
 
-**Input metadata (not derived):** `figdata/popmap_177.tsv` (library to stand map) and `metadata/` (SRA run manifests; the `collection_date` column is added by `metadata/add_collection_dates.py` from the BioSample records). `figdata/stand_coords.npz` is rebuilt by `figures/reconstructed/stand_coords.py` from `metadata/sra_runs_radseq.csv` and `figdata/keep163.txt`.
+**Input metadata (not derived):** `figdata/popmap_177.tsv` (library to stand map) and `metadata/` (SRA run manifests; the `collection_date` column is added by `metadata/add_collection_dates.py` from the BioSample records). `figdata/stand_coords.npz` is rebuilt by `figures/stand_coords.py` from `metadata/sra_runs_radseq.csv` and `figdata/keep163.txt`.

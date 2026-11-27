@@ -222,7 +222,7 @@ consequences = {
 }
 
 out = {
-    "_source": ("Reassembled 18-19 Nov 2026 by scripts/reconstructed/het_diagnosis_assemble.py from "
+    "_source": ("Reassembled 18-19 Nov 2026 by scripts/het_diagnosis_assemble.py from "
                 "the producer outputs named in its SOURCES; constants marked UNSOURCED there."),
     "observed_F": observed_F,
     "F_by_genotype_depth": F_by_depth,
