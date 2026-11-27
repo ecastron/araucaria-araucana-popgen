@@ -98,7 +98,7 @@ ib <- data.frame(depth = NM, n_valid = zb_valid$n, F_valid = round(zb_valid$F, 4
                  n_fixed = zb_fixed$n, F_fixed = round(zb_fixed$F, 4),
                  F_hardcoded = c(0.8694, 0.8153, 0.7847, 0.6512, 0.3061, -0.1960, -0.3363))
 write.table(ib, file.path(O, "ipyrad_binomial_F.tsv"), sep = "\t", quote = FALSE, row.names = FALSE)
-cat("\n== binomial calls on the 34,674 polyRAD loci vs the hard-coded series ==\n"); print(ib, row.names = FALSE)
+cat("\n== binomial calls on the 34,674 polyRAD loci vs the series in build_polyrad_F.py ==\n"); print(ib, row.names = FALSE)
 
 # ---- 3. S2E rows on this route ----------------------------------------------------------------------
 rows <- list(

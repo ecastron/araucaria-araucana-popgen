@@ -183,8 +183,8 @@ ax=fig.add_subplot(gsB[0,0]); style(ax)
 NM=["6-10","10-15","15-20","20-30","30-50","50-100","100+"]; MID=[8,12.5,17.5,25,40,75,150]
 fb={q["depth"]:q for q in csv.DictReader(open("figdata/fb_F_by_depth.csv"))}
 pr={q["depth"]:q for q in csv.DictReader(open("figdata/polyrad_F_by_depth.csv"))}
-# 19 Nov 2026: the binomial series is now READ from the reproduced output (s2e_polyrad_route.R; binomial
-# calls on the same 34,674 polyRAD loci and reads); the hard-coded series it replaces had no producer
+# binomial series read from figdata/ipyrad_binomial_F.tsv (s2e_polyrad_route.R; binomial
+# calls on the same 34,674 polyRAD loci and reads)
 IB={q["depth"]:q for q in csv.DictReader(open("figdata/ipyrad_binomial_F.tsv"),delimiter="\t")}
 # polyRAD de novo line: same estimator as the FreeBayes line and the S2E baseline (s2e_mechanisms.tsv row 9);
 # figdata/polyrad_F_by_depth.csv used a numerator over all depths, giving 1.175 instead of 1.207

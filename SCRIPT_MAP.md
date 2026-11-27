@@ -2,7 +2,7 @@
 
 Maps each Results/Methods unit of the paper to the scripts in this repository, in run order. Only the scripts on the path
 to the reported results and figures are included; development, exploratory and superseded scripts are not distributed.
-Sources: script header comments and the project log (`ANALYSIS_SPEC.md`). Where neither states a
+Sources: script header comments. Where a header states no
 purpose, the script is listed under "Unclassified".
 
 Status labels:

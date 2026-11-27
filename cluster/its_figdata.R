@@ -18,7 +18,6 @@
 # SAMPLE SET (prevalence, richness, composition, ordination): library level; needle or
 # branch; tree_id present in the RAD manifest (that is where the cordillera label comes
 # from); >= 250 reads. Gives 164 libraries from 53 trees in 9 stands, 2,645 non-zero ASVs.
-# This is the "164 with a cordillera assignment / 53 trees" subset of ANALYSIS_SPEC.md.
 #
 # STAND-PAIR SET: the logic of q9_microbiome_ibd.R (ITS block), which wrote
 # results/Q5/microbiome_ibd.txt: counts pooled per tree over needle and branch, trees with
@@ -26,8 +25,8 @@
 # centroids, Euclidean distance; haversine km between stand-mean tree coordinates;
 # between = 1 when one stand is west of -72.5 (Coastal) and the other east of it.
 #
-# ITS TABLE SELECTION. "merged" (default) gives everything above. "r1" reads the forward-read table (dada2_its_r1.R), the pipeline chosen on
-# 4 Aug 2026 (ANALYSIS_SPEC.md). Choose with the first command-line argument or ITS_TABLE;
+# ITS TABLE SELECTION. "merged" (default) gives everything above. "r1" reads the forward-read table (dada2_its_r1.R), the pipeline chosen for
+# the ITS analyses. Choose with the first command-line argument or ITS_TABLE;
 # OUT_DIR redirects output. The 164 / 2,645 / 53 and 248 assertions describe the merged table
 # only, so they are checked only when ITS_TABLE is "merged".
 # The final section recomputes Figure S4 on the Figure 5 sample set
@@ -125,7 +124,7 @@ sp <- data.frame(stand_a = pr[, 1], stand_b = pr[, 2],
 write.table(sp, file.path(OUT, "its_stand_pairs.tsv"), sep = "\t", quote = FALSE, row.names = FALSE)
 cat(sprintf("stand pairs: r(ln km, dissim) = %+.3f over %d pairs\n", cor(log(sp$km), sp$dissim), nrow(sp)))
 
-# ---------------- Figure S4 on the Figure 5 sample set (added 19 Nov 2026) ----------------
+# ---------------- Figure S4 on the Figure 5 sample set ----------------
 # Panel A: per-ASV prevalence. Panel B: core sweep, the number of taxa reaching >= detection
 # relative abundance in >= prevalence of samples, at ASV level and at the rank-propagated Family
 # level of q6_family2.R (ASVs with no Family inherit their finest assigned rank, so no reads are

@@ -1,10 +1,9 @@
 .libPaths(c("~/R/library",.libPaths()))
 suppressPackageStartupMessages({library(vegan); library(LDM)})
 set.seed(2026); P<-"/home/ecastron/araucaria"
-# ITS TABLE SELECTION (added 19 Nov 2026). "merged" = dada2_step1.R merged-pair table, the
-# default, so every run before this date reproduces unchanged. "r1" = dada2_its_r1.R forward-read
-# table, the pipeline the project chose on 4 Aug 2026 (ANALYSIS_SPEC.md: R1 keeps 84.7% of reads
-# against 52.1%). Choose with the first command-line argument or the ITS_TABLE environment
+# ITS TABLE SELECTION. "merged" = dada2_step1.R merged-pair table (the default). "r1" =
+# dada2_its_r1.R forward-read table, the pipeline chosen for the ITS analyses (R1 keeps 84.7%
+# of reads against 52.1% for merged pairs). Choose with the first command-line argument or the ITS_TABLE environment
 # variable. OUT_DIR redirects output so an R1 run never overwrites the merged results.
 ITS_TABLE<-{a<-commandArgs(trailingOnly=TRUE); if(length(a)) a[1] else Sys.getenv("ITS_TABLE","merged")}
 stopifnot(ITS_TABLE %in% c("merged","r1"))

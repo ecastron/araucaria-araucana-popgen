@@ -2,7 +2,7 @@
 """Revision (26 Nov 2026): null distribution of sNMF K = 2 ancestry coefficients
 under the two-refugia history with zero gene flow (H2'), using the Figure 2E method.
 
-Replaces the 26 Aug check (plain NMF, mean-imputed, 3 replicates; ANALYSIS_SPEC.md).
+Replaces an earlier check with plain NMF, mean-imputed genotypes and 3 replicates.
 Parameter sets: the 50 H2 rows of reftable_sim9.csv (the published ABC reference table) nearest
 the observed summary statistics (Euclidean distance on the 15 statistics scaled by their MAD
 across the whole table; rejection ABC, Beaumont et al. 2002, Genetics 162:2025-2035), so the
